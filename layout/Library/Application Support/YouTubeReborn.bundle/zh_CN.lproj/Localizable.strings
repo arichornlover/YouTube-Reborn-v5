@@ -9,6 +9,9 @@
 "SAVED_VIDEO" = "视频已保存到相册";
 "SAVED_VIDEO_2" = "保存到相册失败\n确保在 iOS 设置中向 YouTube 授予相机权限";
 
+"Options" = "选项";
+"Apply" = "应用";
+
 // Downloads
 "VIDEO_TAB" = "视频";
 "AUDIO_TAB" = "音频";
@@ -19,6 +22,10 @@
 "AUDIO_DELETED" = "音频删除成功";
 "VIEW_DOWNLOADS" = "浏览下载项目";
 "VIEW_DOWNLOADS_IN_FILZA" = "Filza浏览下载";
+
+"Progress (Part 1/2): %.02f%%" = "进度 (Part 1/2): %.02f%%";
+"Progress (Part 2/2): %.02f%%" = "进度 (Part 2/2): %.02f%%";
+"Progress: %.02f%%" = "进度: %.02f%%";
 
 // Video Options
 "VIDEO_OPTIONS" = "视频播放选项";
@@ -39,6 +46,13 @@
 "ENABLE_EXTRA_SPEED_OPTIONS" = "启用额外速度选项";
 "DISABLE_DOUBLE_TAP_TO_SKIP" = "禁用双击\"前进/后退\"";
 "ENABLE_CUSTOM_DOUBLE_TAP_TO_SKIP_DURATION" = "自定义双击\"前进/后退\"的时间";
+"Value (Seconds): 10" = "值(秒): 10";
+"Value (Seconds): %.lf" = "值(秒): %.lf";
+
+"This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled" = "启用“我有 YouTube Premium”选项会禁用此功能";
+"You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'" = "必须在 YouTube Reborn 设置中启用“禁用相关视频”和“隐藏快速操作”才能使用“始终显示播放栏”";
+
+
 
 // Overlay Options
 "OVERLAY_OPTIONS" = "播放界面选项";
@@ -61,10 +75,20 @@
 "HIDE_CURRENT_TIME" = "隐藏已播放时长";
 "HIDE_DURATION" = "隐藏视频总时长";
 
+"This option can't be enabled on notched idevices" = "无法在刘海设备上启用此选项";
+"This option can't be enabled with 'Enable iPad Style On iPhone' enabled" = "启用“iPad 布局”时无法启用此选项";
+
 // Tab Bar Options
 "TAB_BAR_OPTIONS" = "标签栏的选项";
 
 "STARTUP_PAGE" = "启动页面";
+"Home" = "首页";
+"Explore" = "探索";
+"Shorts" = "短视频";
+"Create" = "创建/上传(＋)";
+"Subscriptions" = "订阅";
+"You" = "“我”";
+
 "HIDE_TAB_BAR_LABELS" = "隐藏标签";
 "HIDE_EXPLORE_TAB" = "隐藏探索";
 "HIDE_SHORTS_TAB" = "隐藏短视频";
@@ -144,7 +168,17 @@
 "RESET_COLOR_OPTIONS" = "重置颜色选项";
 "RESET_YOUTUBE_REBORN_OPTIONS" = "重置插件设置";
 
+"Are you sure you want to reset your set colour?" = "你想重置所有颜色？";
+"Are you sure you want to reset all your options?" = "你想重置所有设置？";
+
+
+
 // Credits
 "CREDITS_BUTTON" = "开发相关信息";
 "DEVELOPER_TEXT" = "开发者";
 "ICON_DESIGNER_TEXT" = "图标设计";
+"Development Support" = "开发支持";
+"Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"" = "功能：“YouTube Reborn v5 菜单”、“红色进度条”、“灰色缓冲区进度”、“导航栏”、“禁用双击跳过”";
+"Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"" = "功能：“视频播放器下的 YouTube Reborn 按钮”、“YouTube-X/Adblock”、“自动全屏播放”";
+"Features: \"YouTube Reborn Button under Video Player\"" = "功能：“视频播放器下的 YouTube Reborn 按钮”";
+"Features: \"Enable Extra Video Speed\"" = "功能：“额外的视频速度”";

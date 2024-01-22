@@ -103,7 +103,7 @@
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress (Part 1/2): %.02f%%", downloadPercent];
+            downloadPercentLabel.text = [NSString stringWithFormat:LOC(@"Progress (Part 1/2): %.02f%%"), downloadPercent];
         });
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
         NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
@@ -125,7 +125,7 @@
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress (Part 2/2): %.02f%%", downloadPercent];
+            downloadPercentLabel.text = [NSString stringWithFormat:LOC(@"Progress (Part 2/2): %.02f%%"), downloadPercent];
         });
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
         NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
@@ -153,7 +153,7 @@
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress: %.02f%%", downloadPercent];
+            downloadPercentLabel.text = [NSString stringWithFormat:LOC(@"Progress: %.02f%%"), downloadPercent];
         });
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
         NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
@@ -177,7 +177,7 @@
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress: %.02f%%", downloadPercent];
+            downloadPercentLabel.text = [NSString stringWithFormat:LOC(@"Progress: %.02f%%"), downloadPercent];
         });
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
         NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];

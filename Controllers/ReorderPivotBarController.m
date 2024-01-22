@@ -39,7 +39,7 @@
 
     NSArray *savedTabOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"kTabOrder"];
     if (savedTabOrder != nil) {
-        self.tabOrder = [NSMutableArray arrayWithObjects:@"Home", @"Shorts", @"Create", @"Subscriptions", @"You", nil];
+        self.tabOrder = [NSMutableArray arrayWithObjects:LOC(@"Home"), LOC(@"Shorts"), LOC(@"Create"), LOC(@"Subscriptions"), LOC(@"You"), nil];
 
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
         [self.tableView addGestureRecognizer:longPressGesture];
@@ -80,15 +80,15 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"Home";
+            cell.textLabel.text = LOC(@"Home");
         } else if (indexPath.row == 1) { 
-            cell.textLabel.text = @"Shorts";
+            cell.textLabel.text = LOC(@"Shorts");
         } else if (indexPath.row == 2) {
-            cell.textLabel.text = @"Create";
+            cell.textLabel.text = LOC(@"Create");
         } else if (indexPath.row == 3) {
-            cell.textLabel.text = @"Subscriptions";
+            cell.textLabel.text = LOC(@"Subscriptions");
         } else if (indexPath.row == 4) {
-            cell.textLabel.text = @"You";
+            cell.textLabel.text = LOC(@"You");
         }
 
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -104,16 +104,16 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     NSString *tabIdentifier = self.tabOrder[sourceIndexPath.row];
     NSMutableArray *reorderedTabs = [NSMutableArray arrayWithArray:self.tabOrder];
-    if ([tabIdentifier isEqualToString:@"Home"]) {
-        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:@"Home"];
-    } else if ([tabIdentifier isEqualToString:@"Shorts"]) {
-        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:@"Shorts"];
-    } else if ([tabIdentifier isEqualToString:@"Create"]) {
-        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:@"Create"];
-    } else if ([tabIdentifier isEqualToString:@"Subscriptions"]) {
-        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:@"Subscriptions"];
-    } else if ([tabIdentifier isEqualToString:@"You"]) {
-        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:@"You"];
+    if ([tabIdentifier isEqualToString:LOC(@"Home")]) {
+        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:LOC(@"Home")];
+    } else if ([tabIdentifier isEqualToString:LOC(@"Shorts")]) {
+        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:LOC(@"Shorts")];
+    } else if ([tabIdentifier isEqualToString:LOC(@"Create")]) {
+        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:LOC(@"Create")];
+    } else if ([tabIdentifier isEqualToString:LOC(@"Subscriptions")]) {
+        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:LOC(@"Subscriptions")];
+    } else if ([tabIdentifier isEqualToString:LOC(@"You")]) {
+        [reorderedTabs replaceObjectAtIndex:sourceIndexPath.row withObject:LOC(@"You")];
     }
     [self setTabOrder:reorderedTabs];
 }
@@ -134,7 +134,7 @@
 }
 
 - (void)reset {
-    self.tabOrder = [NSMutableArray arrayWithObjects:@"Home", @"Shorts", @"Create", @"Subscriptions", @"You", nil];
+    self.tabOrder = [NSMutableArray arrayWithObjects:LOC(@"Home"), LOC(@"Shorts"), LOC(@"Create"), LOC(@"Subscriptions"), LOC(@"You"), nil];
     [self.tableView reloadData];
     [self save];
 }
@@ -145,15 +145,15 @@
         if (indexPath.section == 0) {
             NSString *tabIdentifier = @"";
             if (indexPath.row == 0) {
-                tabIdentifier = @"Home";
+                tabIdentifier = LOC(@"Home");
             } else if (indexPath.row == 1) {
-                tabIdentifier = @"Shorts";
+                tabIdentifier = LOC(@"Shorts");
             } else if (indexPath.row == 2) {
-                tabIdentifier = @"Create";
+                tabIdentifier = LOC(@"Create");
             } else if (indexPath.row == 3) {
-                tabIdentifier = @"Subscriptions";
+                tabIdentifier = LOC(@"Subscriptions");
             } else if (indexPath.row == 4) {
-                tabIdentifier = @"You";
+                tabIdentifier = LOC(@"You");
             }
             [orderedTabs addObject:tabIdentifier];
         }

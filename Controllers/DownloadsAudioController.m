@@ -127,7 +127,7 @@
     NSString *currentAudioFileName = filePathsAudioArray[indexPath.row];
     NSString *currentArtworkFileName = filePathsAudioArtworkArray[indexPath.row];
 
-    UIAlertController *alertMenu = [UIAlertController alertControllerWithTitle:@"Options" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertMenu = [UIAlertController alertControllerWithTitle:LOC(@"Options") message:nil preferredStyle:UIAlertControllerStyleAlert];
 
     [alertMenu addAction:[UIAlertAction actionWithTitle:LOC(@"DELETE_AUDIO") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [[NSFileManager defaultManager] removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:currentAudioFileName] error:nil];

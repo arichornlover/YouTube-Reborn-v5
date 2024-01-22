@@ -44,7 +44,7 @@
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
     self.navigationItem.leftBarButtonItem = doneButton;
 
-    UIBarButtonItem *applyButton = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(apply)];
+    UIBarButtonItem *applyButton = [[UIBarButtonItem alloc] initWithTitle:LOC(@"Apply") style:UIBarButtonItemStylePlain target:self action:@selector(apply)];
     self.navigationItem.rightBarButtonItem = applyButton;
 
     UITableViewStyle style;

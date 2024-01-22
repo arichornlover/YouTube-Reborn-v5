@@ -54,7 +54,7 @@
         }
         if (indexPath.section == 0) {
             if (indexPath.row == 0) {
-                NSArray *sourceItemArray = [NSArray arrayWithObjects:LOC(@"Main"), LOC(@"MIRROR"), nil];
+                NSArray *sourceItemArray = [NSArray arrayWithObjects:LOC(@"MAIN"), LOC(@"MIRROR"), nil];
                 UISegmentedControl *sourceSegmentedControl = [[UISegmentedControl alloc] initWithItems:sourceItemArray];
                 sourceSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [sourceSegmentedControl addTarget:self action:@selector(actionSourceSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -68,7 +68,7 @@
         }
         if (indexPath.section == 1) {
             if (indexPath.row == 0) {
-                NSArray *sponsorItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *sponsorItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *sponsorSegmentedControl = [[UISegmentedControl alloc] initWithItems:sponsorItemArray];
                 sponsorSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [sponsorSegmentedControl addTarget:self action:@selector(actionSponsorSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -82,7 +82,7 @@
         }
         if (indexPath.section == 2) {
             if (indexPath.row == 0) {
-                NSArray *selfpromoItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *selfpromoItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *selfpromoSegmentedControl = [[UISegmentedControl alloc] initWithItems:selfpromoItemArray];
                 selfpromoSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [selfpromoSegmentedControl addTarget:self action:@selector(actionSelfPromoSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -96,7 +96,7 @@
         }
         if (indexPath.section == 3) {
             if (indexPath.row == 0) {
-                NSArray *interactionItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *interactionItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *interactionSegmentedControl = [[UISegmentedControl alloc] initWithItems:interactionItemArray];
                 interactionSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [interactionSegmentedControl addTarget:self action:@selector(actionInteractionSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -110,7 +110,7 @@
         }
         if (indexPath.section == 4) {
             if (indexPath.row == 0) {
-                NSArray *introItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *introItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *introSegmentedControl = [[UISegmentedControl alloc] initWithItems:introItemArray];
                 introSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [introSegmentedControl addTarget:self action:@selector(actionIntroSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -124,7 +124,7 @@
         }
         if (indexPath.section == 5) {
             if (indexPath.row == 0) {
-                NSArray *outroItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *outroItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *outroSegmentedControl = [[UISegmentedControl alloc] initWithItems:outroItemArray];
                 outroSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [outroSegmentedControl addTarget:self action:@selector(actionOutroSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -138,7 +138,7 @@
         }
         if (indexPath.section == 6) {
             if (indexPath.row == 0) {
-                NSArray *previewItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *previewItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *previewSegmentedControl = [[UISegmentedControl alloc] initWithItems:previewItemArray];
                 previewSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [previewSegmentedControl addTarget:self action:@selector(actionPreviewSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -152,7 +152,7 @@
         }
         if (indexPath.section == 7) {
             if (indexPath.row == 0) {
-                NSArray *fillerItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *fillerItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *fillerSegmentedControl = [[UISegmentedControl alloc] initWithItems:fillerItemArray];
                 fillerSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [fillerSegmentedControl addTarget:self action:@selector(actionFillerSegmentedControl:) forControlEvents:UIControlEventValueChanged];
@@ -166,7 +166,7 @@
         }
         if (indexPath.section == 8) {
             if (indexPath.row == 0) {
-                NSArray *musicofftopicItemArray = [NSArray arrayWithObjects:LOC(@"Disable"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
+                NSArray *musicofftopicItemArray = [NSArray arrayWithObjects:LOC(@"DISABLE"), LOC(@"AUTO_SKIP"), LOC(@"MANUAL_SKIP"), nil];
                 UISegmentedControl *musicofftopicSegmentedControl = [[UISegmentedControl alloc] initWithItems:musicofftopicItemArray];
                 musicofftopicSegmentedControl.frame = CGRectMake(0, 5, self.view.bounds.size.width, cell.bounds.size.height - 10);
                 [musicofftopicSegmentedControl addTarget:self action:@selector(actionMusicOffTopicSegmentedControl:) forControlEvents:UIControlEventValueChanged];

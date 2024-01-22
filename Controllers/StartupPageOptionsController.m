@@ -1,4 +1,5 @@
 #import "StartupPageOptionsController.h"
+#import "Localization.h"
 
 @interface StartupPageOptionsController ()
 - (void)coloursView;
@@ -12,7 +13,7 @@ int selectedIndex;
     [super viewDidLoad];
     [self coloursView];
 
-    self.title = @"Startup Page Options";
+    self.title = LOC(@"STARTUP_PAGE");
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
     self.navigationItem.rightBarButtonItem = doneButton;
@@ -73,31 +74,31 @@ int selectedIndex;
             cell.detailTextLabel.textColor = [UIColor whiteColor];
         }
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"Home";
+            cell.textLabel.text = LOC(@"Home");
             if (selectedIndex == 0) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = @"Explore";
+            cell.textLabel.text = LOC(@"Explore");
             if (selectedIndex == 1) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
         }
         if (indexPath.row == 2) {
-            cell.textLabel.text = @"Shorts";
+            cell.textLabel.text = LOC(@"Shorts");
             if (selectedIndex == 2) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
         }
         if (indexPath.row == 3) {
-            cell.textLabel.text = @"Subscriptions";
+            cell.textLabel.text = LOC(@"Subscriptions");
             if (selectedIndex == 3) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
         }
         if (indexPath.row == 4) {
-            cell.textLabel.text = @"You";
+            cell.textLabel.text = LOC(@"You");
             if (selectedIndex == 4) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }

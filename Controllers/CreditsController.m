@@ -75,23 +75,23 @@
             [self loadImageWithURLString:@"" forImageView:cell.imageView];
         } else if (indexPath.row == 1) {
             cell.textLabel.text = @"kirb";
-            cell.detailTextLabel.text = @"Development Support";
+            cell.detailTextLabel.text = LOC(@"Development Support");
             [self loadImageWithURLString:@"https://avatars.githubusercontent.com/u/773309?v=4" forImageView:cell.imageView];
         } else if (indexPath.row == 2) {
             cell.textLabel.text = @"Dayanch96";
-            cell.detailTextLabel.text = @"Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"";
+            cell.detailTextLabel.text = LOC(@"Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"");
             [self loadImageWithURLString:@"https://avatars.githubusercontent.com/u/38832025?v=4" forImageView:cell.imageView];
         } else if (indexPath.row == 3) {
             cell.textLabel.text = @"PoomSmart";
-            cell.detailTextLabel.text = @"Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"";
+            cell.detailTextLabel.text = LOC(@"Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"");
             [self loadImageWithURLString:@"https://avatars.githubusercontent.com/u/3608783?v=4" forImageView:cell.imageView];
         } else if (indexPath.row == 4) {
             cell.textLabel.text = @"NguyenASang";
-            cell.detailTextLabel.text = @"Features: \"YouTube Reborn Button under Video Player\"";
+            cell.detailTextLabel.text = LOC(@"Features: \"YouTube Reborn Button under Video Player\"");
             [self loadImageWithURLString:@"https://avatars.githubusercontent.com/u/87893636?v=4" forImageView:cell.imageView];
         } else if (indexPath.row == 5) {
             cell.textLabel.text = @"Snoolie";
-            cell.detailTextLabel.text = @"Features: \"Enable Extra Video Speed\"";
+            cell.detailTextLabel.text = LOC(@"Features: \"Enable Extra Video Speed\"");
             [self loadImageWithURLString:@"" forImageView:cell.imageView];
         }
     }
