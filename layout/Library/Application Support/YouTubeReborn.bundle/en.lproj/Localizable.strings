@@ -9,6 +9,9 @@
 "SAVED_VIDEO" = "Video Saved To Camera Roll";
 "SAVED_VIDEO_2" = "Save To Camera Roll Failed \nMake Sure To Give Camera Roll Permission To YouTube In The iOS Settings App";
 
+"Options" = "Options";
+"Apply" = "Apply";
+
 // Downloads
 "VIDEO_TAB" = "Video";
 "AUDIO_TAB" = "Audio";
@@ -19,6 +22,10 @@
 "AUDIO_DELETED" = "Audio Successfully Deleted";
 "VIEW_DOWNLOADS" = "View Downloads";
 "VIEW_DOWNLOADS_IN_FILZA" = "View Downloads In Filza";
+
+"Progress (Part 1/2): %.02f%%" = "Progress (Part 1/2): %.02f%%";
+"Progress (Part 2/2): %.02f%%" = "Progress (Part 2/2): %.02f%%";
+"Progress: %.02f%%" = "Progress: %.02f%%";
 
 // Video Options
 "VIDEO_OPTIONS" = "Video Options";
@@ -39,6 +46,11 @@
 "ENABLE_EXTRA_SPEED_OPTIONS" = "Enable Extra Speed Options";
 "DISABLE_DOUBLE_TAP_TO_SKIP" = "Disable Double Tap To Skip";
 "ENABLE_CUSTOM_DOUBLE_TAP_TO_SKIP_DURATION" = "Enable Custom Double Tap To Skip Duration";
+"Value (Seconds): 10" = "Value (Seconds): 10";
+"Value (Seconds): %.lf" = "Value (Seconds): %.lf";
+
+"This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled" = "This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled";
+"You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'" = "You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'";
 
 // Overlay Options
 "OVERLAY_OPTIONS" = "Overlay Options";
@@ -65,6 +77,13 @@
 "TAB_BAR_OPTIONS" = "Tab Bar Options";
 
 "STARTUP_PAGE" = "Startup Page";
+"Home" = "Home";
+"Explore" = "Explore";
+"Shorts" = "Shorts";
+"Create" = "Create";
+"Subscriptions" = "Subscriptions";
+"You" = "You";
+
 "HIDE_TAB_BAR_LABELS" = "Hide Tab Bar Labels";
 "HIDE_EXPLORE_TAB" = "Hide Explore Tab";
 "HIDE_SHORTS_TAB" = "Hide Shorts Tab";
@@ -144,7 +163,15 @@
 "RESET_COLOR_OPTIONS" = "Reset Color Options";
 "RESET_YOUTUBE_REBORN_OPTIONS" = "Reset All YouTube Reborn Options";
 
+"Are you sure you want to reset your set colour?" = "Are you sure you want to reset your set colour?";
+"Are you sure you want to reset all your options?" = "Are you sure you want to reset all your options?";
+
 // Credits
 "CREDITS_BUTTON" = "Credits";
 "DEVELOPER_TEXT" = "Developer";
 "ICON_DESIGNER_TEXT" = "Icon Designer";
+"Development Support" = "Development Support";
+"Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"" = "Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"";
+"Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"" = "Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"";
+"Features: \"YouTube Reborn Button under Video Player\"" = "Features: \"YouTube Reborn Button under Video Player\"";
+"Features: \"Enable Extra Video Speed\"" = "Features: \"Enable Extra Video Speed\"";

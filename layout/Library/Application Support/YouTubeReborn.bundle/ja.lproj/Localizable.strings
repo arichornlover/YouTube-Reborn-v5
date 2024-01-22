@@ -9,6 +9,9 @@
 "SAVED_VIDEO" = "Video Saved To Camera Roll";
 "SAVED_VIDEO_2" = "Save To Camera Roll Failed \nMake Sure To Give Camera Roll Permission To YouTube In The iOS Settings App";
 
+"Options" = "Options";
+"Apply" = "Apply";
+
 // Downloads
 "VIDEO_TAB" = "動画";
 "AUDIO_TAB" = "音声";
@@ -19,6 +22,10 @@
 "AUDIO_DELETED" = "Audio Successfully Deleted";
 "VIEW_DOWNLOADS" = "ダウンロードを表示";
 "VIEW_DOWNLOADS_IN_FILZA" = "Filzaでダウンロードを表示";
+
+"Progress (Part 1/2): %.02f%%" = "Progress (Part 1/2): %.02f%%";
+"Progress (Part 2/2): %.02f%%" = "Progress (Part 2/2): %.02f%%";
+"Progress: %.02f%%" = "Progress: %.02f%%";
 
 // Video Options
 "VIDEO_OPTIONS" = "動画の設定";
@@ -39,6 +46,11 @@
 "ENABLE_EXTRA_SPEED_OPTIONS" = "追加の速度オプションを有効化";
 "DISABLE_DOUBLE_TAP_TO_SKIP" = "ダブルタップによるスキップを無効化";
 "ENABLE_CUSTOM_DOUBLE_TAP_TO_SKIP_DURATION" = "カスタムダブルタップスキップ時間を有効化";
+"Value (Seconds): 10" = "Value (Seconds): 10";
+"Value (Seconds): %.lf" = "Value (Seconds): %.lf";
+
+"This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled" = "This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled";
+"You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'" = "You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'";
 
 // Overlay Options
 "OVERLAY_OPTIONS" = "オーバーレイの設定";
@@ -61,10 +73,20 @@
 "HIDE_CURRENT_TIME" = "現在の再生時間を非表示";
 "HIDE_DURATION" = "再生時間の長さを非表示";
 
+"This option can't be enabled on notched idevices" = "This option can't be enabled on notched idevices";
+"This option can't be enabled with 'Enable iPad Style On iPhone' enabled" = "This option can't be enabled with 'Enable iPad Style On iPhone' enabled";
+
 // Tab Bar Options
 "TAB_BAR_OPTIONS" = "タブバーの設定";
 
 "STARTUP_PAGE" = "スタートアップページ";
+"Home" = "Home";
+"Explore" = "Explore";
+"Shorts" = "Shorts";
+"Create" = "Create";
+"Subscriptions" = "Subscriptions";
+"You" = "You";
+
 "HIDE_TAB_BAR_LABELS" = "タブバーのラベルを非表示";
 "HIDE_EXPLORE_TAB" = "探索タブを非表示";
 "HIDE_SHORTS_TAB" = "ショートタブを非表示";
@@ -144,7 +166,15 @@
 "RESET_COLOR_OPTIONS" = "カラーオプションをリセット";
 "RESET_YOUTUBE_REBORN_OPTIONS" = "すべての設定をリセット";
 
+"Are you sure you want to reset your set colour?" = "Are you sure you want to reset your set colour?";
+"Are you sure you want to reset all your options?" = "Are you sure you want to reset all your options?";
+
 // Credits
 "CREDITS_BUTTON" = "クレジット";
 "DEVELOPER_TEXT" = "開発者";
 "ICON_DESIGNER_TEXT" = "アイコンデザイナー";
+"Development Support" = "Development Support";
+"Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"" = "Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"";
+"Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"" = "Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"";
+"Features: \"YouTube Reborn Button under Video Player\"" = "Features: \"YouTube Reborn Button under Video Player\"";
+"Features: \"Enable Extra Video Speed\"" = "Features: \"Enable Extra Video Speed\"";

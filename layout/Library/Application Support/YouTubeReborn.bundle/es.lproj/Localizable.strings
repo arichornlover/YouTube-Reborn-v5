@@ -9,6 +9,9 @@
 "SAVED_VIDEO" = "Video Saved To Camera Roll";
 "SAVED_VIDEO_2" = "Save To Camera Roll Failed \nMake Sure To Give Camera Roll Permission To YouTube In The iOS Settings App";
 
+"Options" = "Options";
+"Apply" = "Apply";
+
 // Downloads
 "VIDEO_TAB" = "Vídeo";
 "AUDIO_TAB" = "Audio";
@@ -19,6 +22,10 @@
 "AUDIO_DELETED" = "Audio Successfully Deleted";
 "VIEW_DOWNLOADS" = "Ver descargas";
 "VIEW_DOWNLOADS_IN_FILZA" = "Ver descargas en Filza";
+
+"Progress (Part 1/2): %.02f%%" = "Progress (Part 1/2): %.02f%%";
+"Progress (Part 2/2): %.02f%%" = "Progress (Part 2/2): %.02f%%";
+"Progress: %.02f%%" = "Progress: %.02f%%";
 
 // Video Options
 "VIDEO_OPTIONS" = "Opciones de vídeo";
@@ -39,6 +46,11 @@
 "ENABLE_EXTRA_SPEED_OPTIONS" = "Activar opciones de velocidad extra";
 "DISABLE_DOUBLE_TAP_TO_SKIP" = "Desactivar doble toque para saltar";
 "ENABLE_CUSTOM_DOUBLE_TAP_TO_SKIP_DURATION" = "Activar la duración personalizada de la doble pulsación para saltar";
+"Value (Seconds): 10" = "Value (Seconds): 10";
+"Value (Seconds): %.lf" = "Value (Seconds): %.lf";
+
+"This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled" = "This feature has been disabled cause you have the 'I Have YouTube Premium' option enabled";
+"You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'" = "You must enable 'Disable Related Videos In Overlay' and 'Hide Overlay Quick Actions' in YouTube Reborn settings to use 'Always Show Player Bar'";
 
 // Overlay Options
 "OVERLAY_OPTIONS" = "Opciones de superposición";
@@ -61,10 +73,20 @@
 "HIDE_CURRENT_TIME" = "Ocultar hora actual";
 "HIDE_DURATION" = "Ocultar duración";
 
+"This option can't be enabled on notched idevices" = "This option can't be enabled on notched idevices";
+"This option can't be enabled with 'Enable iPad Style On iPhone' enabled" = "This option can't be enabled with 'Enable iPad Style On iPhone' enabled";
+
 // Tab Bar Options
 "TAB_BAR_OPTIONS" = "Opciones de la barra de pestañas";
 
 "STARTUP_PAGE" = "Página de inicio";
+"Home" = "Home";
+"Explore" = "Explore";
+"Shorts" = "Shorts";
+"Create" = "Create";
+"Subscriptions" = "Subscriptions";
+"You" = "You";
+
 "HIDE_TAB_BAR_LABELS" = "Ocultar etiquetas de la barra de pestañas";
 "HIDE_EXPLORE_TAB" = "Ocultar pestaña Explorar";
 "HIDE_SHORTS_TAB" = "Ocultar pestaña Shorts";
@@ -144,7 +166,15 @@
 "RESET_COLOR_OPTIONS" = "Restablecer opciones de color";
 "RESET_YOUTUBE_REBORN_OPTIONS" = "Restablecer todas las opciones de YouTube Reborn";
 
+"Are you sure you want to reset your set colour?" = "Are you sure you want to reset your set colour?";
+"Are you sure you want to reset all your options?" = "Are you sure you want to reset all your options?";
+
 // Credits
 "CREDITS_BUTTON" = "Créditos";
 "DEVELOPER_TEXT" = "Desarrollador";
 "ICON_DESIGNER_TEXT" = "Diseñador de iconos";
+"Development Support" = "Development Support";
+"Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"" = "Features: \"YouTube Reborn v5 Menu\", \"Red Progress Bar\", \"Gray Buffer Progress\", \"Stick Navigation Bar\", \"Disable Double tap to skip\"";
+"Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"" = "Features: \"YouTube Reborn Button under Video Player\", \"YouTube-X/Adblock\", \"AutoPlay In Fullscreen\"";
+"Features: \"YouTube Reborn Button under Video Player\"" = "Features: \"YouTube Reborn Button under Video Player\"";
+"Features: \"Enable Extra Video Speed\"" = "Features: \"Enable Extra Video Speed\"";
