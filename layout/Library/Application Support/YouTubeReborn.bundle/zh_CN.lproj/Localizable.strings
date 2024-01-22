@@ -5,18 +5,18 @@
 "OKAY_TEXT" = "好的";
 "NOTICE_TEXT" = "注意";
 "COLOR_SAVED" = "颜色已保存";
-"IMPORT_VIDEO" = "Import Video To Camera Roll";
-"SAVED_VIDEO" = "Video Saved To Camera Roll";
-"SAVED_VIDEO_2" = "Save To Camera Roll Failed \nMake Sure To Give Camera Roll Permission To YouTube In The iOS Settings App";
+"IMPORT_VIDEO" = "将视频导入相册";
+"SAVED_VIDEO" = "视频已保存到相册";
+"SAVED_VIDEO_2" = "保存到相册失败\n确保在 iOS 设置中向 YouTube 授予相机权限";
 
 // Downloads
 "VIDEO_TAB" = "视频";
 "AUDIO_TAB" = "音频";
 "DOWNLOAD_NOTICE" = "不要退出应用程序\n下载完成后将自动关闭";
-"DELETE_VIDEO" = "Delete Video";
-"DELETE_AUDIO" = "Delete Audio";
-"VIDEO_DELETED" = "Video Successfully Deleted";
-"AUDIO_DELETED" = "Audio Successfully Deleted";
+"DELETE_VIDEO" = "删除视频";
+"DELETE_AUDIO" = "删除音频";
+"VIDEO_DELETED" = "视频删除成功";
+"AUDIO_DELETED" = "音频删除成功";
 "VIEW_DOWNLOADS" = "浏览下载项目";
 "VIEW_DOWNLOADS_IN_FILZA" = "Filza浏览下载";
 
