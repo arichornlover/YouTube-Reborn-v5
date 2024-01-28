@@ -59,15 +59,15 @@
 "ALWAYS_SHOW_BAR_TEXT" = "必须在 YouTube Reborn 设置中启用“禁用相关视频”和“隐藏快速操作”才能使用“始终显示播放栏”";
 
 // Video Player Options
-"VIDEO_PLAYER_OPTIONS" = "Video Player Options";
+"VIDEO_PLAYER_OPTIONS" = "播放器的选项";
 
-"HIDE_CONNECT_PLAYER_BUTTON" = "Hide 'Connect' Button under Video Player";
-"HIDE_SHARE_PLAYER_BUTTON" = "Hide 'Share' Button under Video Player";
-"HIDE_REMIX_PLAYER_BUTTON" = "Hide 'Remix' Button under Video Player";
-"HIDE_THANKS_PLAYER_BUTTON" = "Hide 'Thanks' Button under Video Player";
-"HIDE_DOWNLOAD_PLAYER_BUTTON" = "Hide 'Download' Button under Video Player";
-"HIDE_CLIP_PLAYER_BUTTON" = "Hide 'Clip' Button under Video Player";
-"HIDE_SAVE_PLAYER_BUTTON" = "Hide 'Save' Button under Video Player";
+"HIDE_CONNECT_PLAYER_BUTTON" = "隐藏播放器下方“连接”按钮";
+"HIDE_SHARE_PLAYER_BUTTON" = "隐藏播放器下方“分享”按钮";
+"HIDE_REMIX_PLAYER_BUTTON" = "隐藏播放器下方“混剪”按钮";
+"HIDE_THANKS_PLAYER_BUTTON" = "隐藏播放器下方“感谢”按钮";
+"HIDE_DOWNLOAD_PLAYER_BUTTON" = "隐藏播放器下方“下载”按钮";
+"HIDE_CLIP_PLAYER_BUTTON" = "隐藏播放器下方“剪辑”按钮";
+"HIDE_SAVE_PLAYER_BUTTON" = "隐藏播放器下方“保存”按钮";
 
 // Overlay Options
 "OVERLAY_OPTIONS" = "播放界面选项";
@@ -180,7 +180,7 @@
 "REBORN_SETTINGS" = "附加功能选项";
 
 "I_HAVE_YOUTUBE_PREMIUM" = "我有 YouTube Premium";
-"HIDE_PLAYER_OVERLAY_OP_BUTTON" = "Hide 'OP' Button under Video Player";
+"HIDE_PLAYER_OVERLAY_OP_BUTTON" = "隐藏播放器下方“OP”按钮";
 "HIDE_VIDEO_OVERLAY_OP_BUTTON" = "隐藏视频左上角“OP”按钮";
 "HIDE_SHORTS_OVERLAY_OP_BUTTON" = "隐藏短视频左上角“OP”按钮";
 "RESET_COLOR_OPTIONS" = "重置颜色选项";
