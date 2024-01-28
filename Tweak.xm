@@ -2847,19 +2847,19 @@ NSString *customAppVersion = nil; // Declare the global variable
     CGFloat buttonSeparation = 8;
     CGFloat currentX = 0;
     for (UIView *subview in self.subviews) {
-        if ([subview.accessibilityIdentifier isEqualToString:@"connect account"]) {
+        if ([subview.accessibilityIdentifier isEqualToString:LOC(@"CONNEXT_ACCOUNT_TEXT")]) {
             subview.hidden = hideConnectButton;
-        } else if ([subview.accessibilityIdentifier isEqualToString:@"id.video.share.button"] || [subview.accessibilityIdentifier isEqualToString:@"Share"]) {
+        } else if ([subview.accessibilityIdentifier isEqualToString:@"id.video.share.button"] || [subview.accessibilityIdentifier isEqualToString:LOC(@"SHARE_TEXT")]) {
             subview.hidden = hideShareButton;
-        } else if ([subview.accessibilityIdentifier isEqualToString:@"id.video.remix.button"] || [subview.accessibilityIdentifier isEqualToString:@"Create a Short with this video"]) {
+        } else if ([subview.accessibilityIdentifier isEqualToString:@"id.video.remix.button"] || [subview.accessibilityIdentifier isEqualToString:LOC(@"CREATE_SHORT_TEXT")]) {
             subview.hidden = hideRemixButton;
-        } else if ([subview.accessibilityLabel isEqualToString:@"Thanks"]) {
+        } else if ([subview.accessibilityLabel isEqualToString:LOC(@"THANKS_TEXT")]) {
             subview.hidden = hideThanksButton;
-        } else if ([subview.accessibilityIdentifier isEqualToString:@"id.ui.add_to.offline.button"] || [subview.accessibilityIdentifier isEqualToString:@"Download"]) {
+        } else if ([subview.accessibilityIdentifier isEqualToString:@"id.ui.add_to.offline.button"] || [subview.accessibilityIdentifier isEqualToString:LOC(@"DOWNLOAD_TEXT")]) {
             subview.hidden = hideAddToOfflineButton;
-        } else if ([subview.accessibilityLabel isEqualToString:@"Clip"]) {
+        } else if ([subview.accessibilityLabel isEqualToString:LOC(@"CLIP_TEXT")]) {
             subview.hidden = hideClipButton;
-        } else if ([subview.accessibilityLabel isEqualToString:@"Save to playlist"]) {
+        } else if ([subview.accessibilityLabel isEqualToString:LOC(@"SAVE_PLAYLIST_TEXT")]) {
             subview.hidden = hideSaveToPlaylistButton;
         }
         if (!subview.hidden) {

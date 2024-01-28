@@ -69,6 +69,14 @@
 "HIDE_CLIP_PLAYER_BUTTON" = "Hide 'Clip' Button under Video Player";
 "HIDE_SAVE_PLAYER_BUTTON" = "Hide 'Save' Button under Video Player";
 
+"CONNEXT_ACCOUNT_TEXT" = "connect account";
+"SHARE_TEXT" = "Share";
+"CREATE_SHORT_TEXT" = "Create a Short with this video";
+"THANKS_TEXT" = "Thanks";
+"DOWNLOAD_TEXT" = "Download";
+"CLIP_TEXT" = "Clip";
+"SAVE_PLAYLIST_TEXT" = "Save to playlist";
+
 // Overlay Options
 "OVERLAY_OPTIONS" = "オーバーレイの設定";
 

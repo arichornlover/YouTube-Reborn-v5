@@ -69,6 +69,14 @@
 "HIDE_CLIP_PLAYER_BUTTON" = "隐藏播放器下方“剪辑”按钮";
 "HIDE_SAVE_PLAYER_BUTTON" = "隐藏播放器下方“保存”按钮";
 
+"CONNEXT_ACCOUNT_TEXT" = "连接帐户";
+"SHARE_TEXT" = "分享";
+"CREATE_SHORT_TEXT" = "使用该视频制作视频";
+"THANKS_TEXT" = "感谢";
+"DOWNLOAD_TEXT" = "下载";
+"CLIP_TEXT" = "剪辑";
+"SAVE_PLAYLIST_TEXT" = "保存到播放列表";
+
 // Overlay Options
 "OVERLAY_OPTIONS" = "播放界面选项";
 
