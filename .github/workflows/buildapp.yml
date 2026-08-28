@@ -44,7 +44,7 @@ concurrency:
 jobs:
   build:
     name: Build YouTube Reborn
-    runs-on: macos-13
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -79,7 +79,7 @@ jobs:
         if: steps.SDK.outputs.cache-hit != 'true'
         run: |
           git clone -n --depth=1 --filter=tree:0 https://github.com/arichornlover/sdks.git && cd sdks
-          git sparse-checkout set --no-cone iPhoneOS16.4.sdk
+          git sparse-checkout set --no-cone iPhoneOS17.5.sdk
           git checkout
           mv *.sdk $THEOS/sdks
         env:
