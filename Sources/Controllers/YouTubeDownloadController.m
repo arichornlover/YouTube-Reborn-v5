@@ -1,12 +1,5 @@
 #import "YouTubeDownloadController.h"
-#import "../../Dependencies/MobileFFmpeg/MobileFFmpegConfig.h"
-#import "../../Dependencies/MobileFFmpeg/MobileFFmpeg.h"
-#import "../../Dependencies/MobileFFmpeg/libavcodec/avcodec.h"
-#import "../../Dependencies/MobileFFmpeg/libavdevice/avdevice.h"
-#import "../../Dependencies/MobileFFmpeg/libavfilter/avfilter.h"
-#import "../../Dependencies/MobileFFmpeg/libavutil/avutil.h"
-#import "../../Dependencies/MobileFFmpeg/libswresample/swresample.h"
-#import "../../Dependencies/MobileFFmpeg/libswscale/swscale.h"
+#import "../UYTMediaKit.h"
 #import "../../Dependencies/AFNetworking/AFNetworking.h"
 
 @interface YouTubeDownloadController () {
@@ -133,8 +126,8 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSCharacterSet *notAllowedChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
-        [MobileFFmpeg execute:[NSString stringWithFormat:@"-i %@ -c:a libmp3lame -q:a 8 %@/audio.mp3", filePath, documentsDirectory]];
-        [MobileFFmpeg execute:[NSString stringWithFormat:@"-i %@/video.mp4 -i %@/audio.mp3 -c:v copy -c:a aac %@/output.mp4", documentsDirectory, documentsDirectory, documentsDirectory]];
+    UYTFFRun(@[@"-i", filePath, @"-c:a", @"libmp3lame", @"-q:a", @"8", [NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory]]);
+    UYTFFRun(@[@"-i", [NSString stringWithFormat:@"%@/video.mp4", documentsDirectory], @"-i", [NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory], @"-c:v", @"copy", @"-c:a", @"aac", [NSString stringWithFormat:@"%@/output.mp4", documentsDirectory]]);
         [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/output.mp4", documentsDirectory] toPath:[NSString stringWithFormat:@"%@/%@.mp4", documentsDirectory, [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]] error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:[filePath path] error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/video.mp4", documentsDirectory] error:nil];
@@ -161,7 +154,8 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSCharacterSet *notAllowedChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
-        [MobileFFmpeg execute:[NSString stringWithFormat:@"-i %@ -c:a libmp3lame -q:a 8 %@/%@.mp3", filePath, documentsDirectory, [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]]];
+        NSString *safeTitle = [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    UYTFFRun(@[@"-i", filePath, @"-c:a", @"libmp3lame", @"-q:a", @"8", [NSString stringWithFormat:@"%@/%@.mp3", documentsDirectory, safeTitle]]);
         [[NSFileManager defaultManager] removeItemAtPath:[filePath path] error:nil];
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
