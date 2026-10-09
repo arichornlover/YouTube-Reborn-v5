@@ -1,4 +1,5 @@
 #import "Tweak.h"
+#import "YouTubeReborn-Swift.h"
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -287,12 +288,11 @@ static NSString *accessGroupID() {
 }
 %new
 - (void)rebornRootOptionsAction {
-    RootOptionsController *rootOptionsController = [[RootOptionsController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *rootOptionsControllerView = [[UINavigationController alloc] initWithRootViewController:rootOptionsController];
-    rootOptionsControllerView.modalPresentationStyle = UIModalPresentationFullScreen;
+    UIViewController *rebornMenu = [RebornRootViewController make];
+    rebornMenu.modalPresentationStyle = UIModalPresentationFullScreen;
 
     UIViewController *rootPrefsViewController = [self _viewControllerForAncestor];
-    [rootPrefsViewController presentViewController:rootOptionsControllerView animated:YES completion:nil];
+    [rootPrefsViewController presentViewController:rebornMenu animated:YES completion:nil];
 }
 %end
 
@@ -2544,6 +2544,10 @@ BOOL selectedTabIndex = NO;
             [self selectItemWithPivotIdentifier:@"FElibrary"];
             selectedTabIndex = YES;
         }
+        if (selectedTab == 5 && !selectedTabIndex) {
+            [self selectItemWithPivotIdentifier:@"FEnotifications_inbox"];
+            selectedTabIndex = YES;
+        }
     }
 }
 %end
@@ -2553,31 +2557,30 @@ BOOL selectedTabIndex = NO;
 - (void)viewDidLoad {
     %orig();
     NSArray *tabOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"kTabOrder"];
-    
-    NSDictionary *tabPositions = @{
-        @"FEwhat_to_watch": @(0), // Home
-        @"FEshorts": @(1), // Shorts
-        @"FEuploads": @(2), // Create
-        @"FEsubscriptions": @(3), // Subscriptions
-        @"FElibrary": @(4) // You
-    };
-    NSArray *sortedTabOrder = [tabOrder sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSNumber *position1 = tabPositions[obj1];
-        NSNumber *position2 = tabPositions[obj2];
-        return [position1 compare:position2];
-    }];
+    if (![tabOrder isKindOfClass:[NSArray class]] || tabOrder.count == 0) return;
+
+    NSMutableArray *items = [self.tabItems mutableCopy];
     NSMutableArray *reorderedTabs = [NSMutableArray array];
-    for (NSString *tabIdentifier in sortedTabOrder) {
-        for (id tabItem in self.tabItems) {
+    for (NSString *tabIdentifier in tabOrder) {
+        if (![tabIdentifier isKindOfClass:[NSString class]]) continue;
+        NSUInteger index = NSNotFound;
+        NSUInteger idx = 0;
+        for (id tabItem in items) {
             if ([tabItem respondsToSelector:@selector(pivotIdentifier)]) {
                 NSString *pivotIdentifier = [tabItem pivotIdentifier];
                 if ([pivotIdentifier isEqualToString:tabIdentifier]) {
-                    [reorderedTabs addObject:tabItem];
+                    index = idx;
                     break;
                 }
             }
+            idx++;
+        }
+        if (index != NSNotFound) {
+            [reorderedTabs addObject:items[index]];
+            [items removeObjectAtIndex:index];
         }
     }
+    [reorderedTabs addObjectsFromArray:items];
     [self setTabItems:reorderedTabs];
 }
 %end

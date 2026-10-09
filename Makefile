@@ -1,4 +1,4 @@
-TARGET = iphone:clang:17.5:14.0
+TARGET = iphone:clang:17.5:16.0
 export SDK_PATH = $(THEOS)/sdks/iPhoneOS17.5.sdk/
 export SYSROOT = $(SDK_PATH)
 YouTubeReborn_USE_FLEX = 0
@@ -15,12 +15,16 @@ DISPLAY_NAME = YouTube
 BUNDLE_ID = com.google.ios.youtube
 INSTALL_TARGET_PROCESSES = YouTube
 
-YouTubeReborn_FILES = Tweak.xm $(shell find Controllers -name '*.m') $(shell find AFNetworking -name '*.m') $(shell find YouTubeExtractor -name '*.m')
+YouTubeReborn_FILES = Tweak.xm $(shell find Controllers -name '*.m') $(shell find AFNetworking -name '*.m') $(shell find YouTubeExtractor -name '*.m') $(shell find Modern -name '*.xm')
 YouTubeReborn_IPA = tmp/Payload/YouTube.app
 YouTubeReborn_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
-YouTubeReborn_FRAMEWORKS = UIKit Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox
+YouTubeReborn_FRAMEWORKS = UIKit Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox SwiftUI Combine QuartzCore
 YouTubeReborn_OBJ_FILES = $(shell find lib -name '*.a')
 YouTubeReborn_LIBRARIES = bz2 c++ iconv z
+
+YouTubeReborn_SWIFT_FILES = $(shell find RebornUI -name '*.swift')
+YouTubeReborn_SWIFT_BRIDGING_HEADER = RebornUI/Reborn-Bridging-Header.h
+YouTubeReborn_SWIFT_VERSION = 5
 
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
