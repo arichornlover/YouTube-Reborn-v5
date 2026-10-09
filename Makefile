@@ -15,15 +15,15 @@ DISPLAY_NAME = YouTube
 BUNDLE_ID = com.google.ios.youtube
 INSTALL_TARGET_PROCESSES = YouTube
 
-YouTubeReborn_FILES = Tweak.xm $(shell find Controllers -name '*.m') $(shell find AFNetworking -name '*.m') $(shell find YouTubeExtractor -name '*.m') $(shell find Modern -name '*.xm')
+YouTubeReborn_FILES = Sources/Tweak.xm $(shell find Sources/Controllers -name '*.m') $(shell find Dependencies/AFNetworking -name '*.m') $(shell find Dependencies/YouTubeExtractor -name '*.m') $(shell find Sources/Modern -name '*.xm')
 YouTubeReborn_IPA = tmp/Payload/YouTube.app
-YouTubeReborn_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
+YouTubeReborn_CFLAGS = -fobjc-arc -Wno-deprecated-declarations -I$(THEOS_PROJECT_DIR)/Sources -I$(THEOS_PROJECT_DIR)/Dependencies
 YouTubeReborn_FRAMEWORKS = UIKit Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox SwiftUI Combine QuartzCore
-YouTubeReborn_OBJ_FILES = $(shell find lib -name '*.a')
+YouTubeReborn_OBJ_FILES = $(shell find Dependencies/lib -name '*.a')
 YouTubeReborn_LIBRARIES = bz2 c++ iconv z
 
-YouTubeReborn_SWIFT_FILES = $(shell find RebornUI -name '*.swift')
-YouTubeReborn_SWIFT_BRIDGING_HEADER = RebornUI/Reborn-Bridging-Header.h
+YouTubeReborn_SWIFT_FILES = $(shell find Sources/RebornUI -name '*.swift')
+YouTubeReborn_SWIFT_BRIDGING_HEADER = Sources/RebornUI/Reborn-Bridging-Header.h
 YouTubeReborn_SWIFT_VERSION = 5
 
 include $(THEOS)/makefiles/common.mk

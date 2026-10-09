@@ -13,7 +13,7 @@
 #import <UIKit/UIKit.h>
 #import <HBLog.h>
 
-#import "Tweak.h"
+#import "../Tweak.h"
 
 #ifndef YT_NOTIFICATIONS
 #define YT_NOTIFICATIONS 264

@@ -1,13 +1,13 @@
 #import "YouTubeDownloadController.h"
-#import "../MobileFFmpeg/MobileFFmpegConfig.h"
-#import "../MobileFFmpeg/MobileFFmpeg.h"
-#import "../MobileFFmpeg/libavcodec/avcodec.h"
-#import "../MobileFFmpeg/libavdevice/avdevice.h"
-#import "../MobileFFmpeg/libavfilter/avfilter.h"
-#import "../MobileFFmpeg/libavutil/avutil.h"
-#import "../MobileFFmpeg/libswresample/swresample.h"
-#import "../MobileFFmpeg/libswscale/swscale.h"
-#import "../AFNetworking/AFNetworking.h"
+#import "../../Dependencies/MobileFFmpeg/MobileFFmpegConfig.h"
+#import "../../Dependencies/MobileFFmpeg/MobileFFmpeg.h"
+#import "../../Dependencies/MobileFFmpeg/libavcodec/avcodec.h"
+#import "../../Dependencies/MobileFFmpeg/libavdevice/avdevice.h"
+#import "../../Dependencies/MobileFFmpeg/libavfilter/avfilter.h"
+#import "../../Dependencies/MobileFFmpeg/libavutil/avutil.h"
+#import "../../Dependencies/MobileFFmpeg/libswresample/swresample.h"
+#import "../../Dependencies/MobileFFmpeg/libswscale/swscale.h"
+#import "../../Dependencies/AFNetworking/AFNetworking.h"
 
 @interface YouTubeDownloadController () {
     UIImageView *artworkImage;
