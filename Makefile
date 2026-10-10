@@ -18,7 +18,7 @@ INSTALL_TARGET_PROCESSES = YouTube
 YouTubeReborn_FILES = Sources/Tweak.xm $(shell find Sources/Controllers -name '*.m') $(shell find Sources -name '*.xm') $(shell find Dependencies/AFNetworking -name '*.m') $(shell find Dependencies/YouTubeExtractor -name '*.m') $(shell find Sources/Modern -name '*.xm')
 YouTubeReborn_IPA = tmp/Payload/YouTube.app
 YouTubeReborn_CFLAGS = -fobjc-arc -Wno-deprecated-declarations -I$(THEOS_PROJECT_DIR)/Sources -I$(THEOS_PROJECT_DIR)/Dependencies
-YouTubeReborn_FRAMEWORKS = UIKit Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox SwiftUI Combine QuartzCore JavaScriptCore
+YouTubeReborn_FRAMEWORKS = UIKit Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox SwiftUI Combine QuartzCore JavaScriptCore Lottie
 YouTubeReborn_LIBRARIES = bz2 c++ iconv z sqlite3 dl
 
 YouTubeReborn_SWIFT_FILES = $(shell find Sources/RebornUI -name '*.swift')
