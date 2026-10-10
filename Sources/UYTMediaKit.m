@@ -24,18 +24,20 @@ static NSString *UYTFFBinaryPath(NSString *root, NSString *name) {
             stringByAppendingPathComponent:name];
 }
 
-// Our own FFmpegKitNext copy is staged into uYouMedia.bundle at build time by
-// tools/stage-ffmpeg.sh, so nothing here depends on whatever ffmpeg YouTube
-// happens to vendor. Mirrors YouMod's resolver: ask the main bundle first (the
-// Makefile embeds Bundles/*.bundle), then the jailbreak roots, so the same
-// binary works jailed and rootless without taking a jbroot dependency.
+// Our own FFmpegKitNext copy is staged into YouTubeRebornMedia.bundle at build time by
+// Tools/stage-ffmpeg.sh.
 static NSString *UYTMediaBundlePath(void) {
     static NSString *path = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString *found = [[NSBundle mainBundle] pathForResource:@"uYouMedia" ofType:@"bundle"];
+        NSString *found = [[NSBundle mainBundle] pathForResource:@"YouTubeRebornMedia" ofType:@"bundle"];
         if (!found.length) {
-            for (NSString *candidate in @[@"/var/jb/Library/Application Support/uYouMedia.bundle",
+            found = [[NSBundle mainBundle] pathForResource:@"uYouMedia" ofType:@"bundle"];
+        }
+        if (!found.length) {
+            for (NSString *candidate in @[@"/var/jb/Library/Application Support/YouTubeRebornMedia.bundle",
+                                          @"/Library/Application Support/YouTubeRebornMedia.bundle",
+                                          @"/var/jb/Library/Application Support/uYouMedia.bundle",
                                           @"/Library/Application Support/uYouMedia.bundle"]) {
                 if ([[NSFileManager defaultManager] fileExistsAtPath:candidate]) { found = candidate; break; }
             }
