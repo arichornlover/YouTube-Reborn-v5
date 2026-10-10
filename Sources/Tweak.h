@@ -13,11 +13,11 @@
 #import "Controllers/YouTubeUtils.h"
 #import "UYTMediaKit.h"
 #import "UYTSABR.h"
-#import "DownloadPipeline.h"
+
 #import "YTSigDecipher.h"
-#import "UYTDownloadsDB.h"
+
 #import "UYTFileSize.h"
-#import "UYTLog.h"
+
 #import <YouTubeHeader/YTVideoQualitySwitchOriginalController.h"
 #import <YouTubeHeader/YTVideoWithContextNode.h"
 #import <YouTubeHeader/YTIElementRenderer.h"
