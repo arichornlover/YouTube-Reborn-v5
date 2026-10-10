@@ -9,7 +9,7 @@
     NSURL *requestURL;
     if ([client isEqual:@"android"]) {
         requestURL = [NSURL URLWithString:@"https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false"];
-    } else if ([client isEqual:@"ios"]) {
+    } else if ([client isEqual:@"ios"] || [client isEqual:@"mediaconnect"]) {
         requestURL = [NSURL URLWithString:@"https://www.youtube.com/youtubei/v1/player?key=AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc&prettyPrint=false"];
     }
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
@@ -19,7 +19,7 @@
         [request setValue:@"com.google.android.youtube/19.05.36 (Linux; U; Android 11) gzip" forHTTPHeaderField:@"User-Agent"];
         NSString *jsonBody = [NSString stringWithFormat:@"{\"context\":{\"client\":{\"hl\":\"en\",\"gl\":\"%@\",\"clientName\":\"ANDROID\",\"clientVersion\":\"19.05.36\",\"androidSdkVersion\":30,\"playbackContext\":{\"contentPlaybackContext\":{\"vis\":0,\"splay\":false,\"autoCaptionsDefaultOn\":false,\"autonavState\":\"STATE_OFF\",\"signatureTimestamp\":\"sts\",\"html5Preference\":\"HTML5_PREF_WANTS\",\"lactMilliseconds\":\"-1\"}}}},\"contentCheckOk\":true,\"racyCheckOk\":true,\"videoId\":\"%@\"}", countryCode, videoID];
         [request setHTTPBody:[jsonBody dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES]];
-    } else if ([client isEqual:@"ios"]) {
+    } else if ([client isEqual:@"ios"] || [client isEqual:@"mediaconnect"]) {
         [request setValue:@"com.google.ios.youtube/19.06.2 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)" forHTTPHeaderField:@"User-Agent"];
         NSString *jsonBody = [NSString stringWithFormat:@"{\"context\":{\"client\":{\"hl\":\"en\",\"gl\":\"%@\",\"clientName\":\"IOS\",\"clientVersion\":\"19.06.2\",\"deviceModel\":\"iPhone14,3\",\"playbackContext\":{\"contentPlaybackContext\":{\"vis\":0,\"splay\":false,\"autoCaptionsDefaultOn\":false,\"autonavState\":\"STATE_OFF\",\"signatureTimestamp\":\"sts\",\"html5Preference\":\"HTML5_PREF_WANTS\",\"lactMilliseconds\":\"-1\"}}}},\"contentCheckOk\":true,\"racyCheckOk\":true,\"videoId\":\"%@\"}", countryCode, videoID];
         [request setHTTPBody:[jsonBody dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES]];

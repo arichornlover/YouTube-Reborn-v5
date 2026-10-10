@@ -18,7 +18,7 @@ STAGING="${1:?usage: stage-ffmpeg.sh <bundle search root, e.g. Bundles>}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/.." && pwd)"
 
-BUNDLE_NAME="uYouMedia.bundle"
+BUNDLE_NAME="YouTubeRebornMedia.bundle"
 # No Info.plist on purpose: this bundle only ever holds frameworks, and the
 # runtime resolver only calls -pathForResource:ofType: and -fileExistsAtPath: on
 # it. A .gitkeep keeps the directory tracked, since git cannot track empty dirs.
