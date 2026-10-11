@@ -26,5 +26,6 @@
 #import "../Controllers/CreditsController.h"
 #import "../Controllers/StartupPageOptionsController.h"
 #import "../Controllers/ReorderPivotBarController.h"
+#import "../Modern/RebornDownloadPanel.h"
 
 #endif /* REBORN_BRIDGING_HEADER_H */

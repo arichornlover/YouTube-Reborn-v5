@@ -378,15 +378,10 @@ static NSString *accessGroupID() {
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
 
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"kRebornIHaveYouTubePremium"]) {
-        [alertMenu addAction:[UIAlertAction actionWithTitle:@"Download Audio" 
+        [alertMenu addAction:[UIAlertAction actionWithTitle:@"Download" 
                                                       style:UIAlertActionStyleDefault 
                                                     handler:^(UIAlertAction *action) {
-            [self rebornAudioDownloader:videoID];
-        }]];
-        [alertMenu addAction:[UIAlertAction actionWithTitle:@"Download Video" 
-                                                      style:UIAlertActionStyleDefault 
-                                                    handler:^(UIAlertAction *action) {
-            [self rebornVideoDownloader:videoID];
+            [RebornDownloadPanel presentForVideoID:videoID fromViewController:[self _viewControllerForAncestor]];
         }]];
     }
 
@@ -409,103 +404,6 @@ static NSString *accessGroupID() {
     }
 }
 
-%new
-- (void)rebornVideoDownloader:(NSString *)videoID {
-    NSDictionary *playerResponse = [YouTubeExtractor youtubePlayerRequest:@"mediaconnect":videoID];
-    if (![YouTubeUtils validatePlayerResponse:playerResponse]) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Failed to fetch video details."];
-        return;
-    }
-
-    NSDictionary *videoDetails = playerResponse[@"videoDetails"];
-    NSString *videoTitle = videoDetails[@"title"];
-    NSArray *thumbnails = videoDetails[@"thumbnail"][@"thumbnails"];
-    NSURL *artworkURL = [YouTubeUtils highestQualityThumbnailURLFromArray:thumbnails];
-
-    NSArray *adaptiveFormats = playerResponse[@"streamingData"][@"adaptiveFormats"];
-    NSDictionary *bestVideo = [YouTubeUtils bestVideoInfoFromFormats:adaptiveFormats];
-    NSDictionary *bestAudio = [YouTubeUtils bestAudioInfoFromFormats:adaptiveFormats];
-
-    if (!bestVideo[@"url"] || !videoTitle.length || !artworkURL) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Unable to prepare video download."];
-        return;
-    }
-
-    UIAlertController *qualitySelector = [UIAlertController alertControllerWithTitle:@"Select Quality" 
-                                                                             message:nil 
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    NSArray *resolutions = @[@"2160p", @"1440p", @"1080p", @"720p", @"480p", @"360p", @"240p"];
-    for (NSString *resolution in resolutions) {
-        if (bestVideo[resolution]) {
-            [qualitySelector addAction:[UIAlertAction actionWithTitle:resolution 
-                                                               style:UIAlertActionStyleDefault 
-                                                             handler:^(UIAlertAction *action) {
-                YouTubeDownloadController *downloadController = [[YouTubeDownloadController alloc] init];
-                downloadController.downloadTitle = videoTitle;
-                downloadController.videoURL = bestVideo[resolution];
-                downloadController.audioURL = bestAudio[@"url"];
-                downloadController.dualURL = nil;
-                downloadController.artworkURL = artworkURL;
-                downloadController.downloadOption = 0;
-
-                UIViewController *ancestorController = [self _viewControllerForAncestor];
-                if (ancestorController) {
-                    [ancestorController presentViewController:downloadController animated:YES completion:nil];
-                }
-            }]];
-        }
-    }
-
-    [qualitySelector addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    qualitySelector.modalPresentationStyle = UIModalPresentationPopover;
-    qualitySelector.popoverPresentationController.sourceView = self;
-    qualitySelector.popoverPresentationController.sourceRect = self.bounds;
-
-    UIViewController *ancestorController = [self _viewControllerForAncestor];
-    if (ancestorController) {
-        [ancestorController presentViewController:qualitySelector animated:YES completion:nil];
-    }
-}
-
-%new
-- (void)rebornAudioDownloader:(NSString *)videoID {
-    NSDictionary *playerResponse = [YouTubeExtractor youtubePlayerRequest:@"mediaconnect":videoID];
-    if (![YouTubeUtils validatePlayerResponse:playerResponse]) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Failed to fetch audio details."];
-        return;
-    }
-
-    NSDictionary *videoDetails = playerResponse[@"videoDetails"];
-    NSString *videoTitle = videoDetails[@"title"];
-    NSArray *thumbnails = videoDetails[@"thumbnail"][@"thumbnails"];
-    NSURL *artworkURL = [YouTubeUtils highestQualityThumbnailURLFromArray:thumbnails];
-
-    NSArray *adaptiveFormats = playerResponse[@"streamingData"][@"adaptiveFormats"];
-    NSDictionary *audioInfo = [YouTubeUtils bestAudioInfoFromFormats:adaptiveFormats];
-
-    if (!audioInfo[@"url"] || !videoTitle.length || !artworkURL) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Unable to prepare audio download."];
-        return;
-    }
-
-    YouTubeDownloadController *downloadController = [[YouTubeDownloadController alloc] init];
-    downloadController.downloadTitle = videoTitle;
-    downloadController.videoURL = nil;
-    downloadController.audioURL = audioInfo[@"url"];
-    downloadController.dualURL = nil;
-    downloadController.artworkURL = artworkURL;
-    downloadController.downloadOption = 1;
-
-    UIViewController *ancestorController = [self _viewControllerForAncestor];
-    if (ancestorController) {
-        [ancestorController presentViewController:downloadController animated:YES completion:nil];
-    }
-}
 
 %new
 - (void)rebornPlayInExternalApp:(NSString *)videoID {
@@ -574,15 +472,10 @@ static NSString *accessGroupID() {
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
 
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"kRebornIHaveYouTubePremium"]) {
-        [alertMenu addAction:[UIAlertAction actionWithTitle:@"Download Audio" 
+        [alertMenu addAction:[UIAlertAction actionWithTitle:@"Download" 
                                                       style:UIAlertActionStyleDefault 
                                                     handler:^(UIAlertAction *action) {
-            [self rebornAudioDownloader:videoID];
-        }]];
-        [alertMenu addAction:[UIAlertAction actionWithTitle:@"Download Video" 
-                                                      style:UIAlertActionStyleDefault 
-                                                    handler:^(UIAlertAction *action) {
-            [self rebornVideoDownloader:videoID];
+            [RebornDownloadPanel presentForVideoID:videoID fromViewController:[self _viewControllerForAncestor]];
         }]];
     }
 
@@ -605,80 +498,6 @@ static NSString *accessGroupID() {
     }
 }
 
-%new
-- (void)rebornVideoDownloader:(NSString *)videoID {
-    NSDictionary *playerResponse = [YouTubeExtractor youtubePlayerRequest:@"mediaconnect":videoID];
-    if (![YouTubeUtils validatePlayerResponse:playerResponse]) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Failed to fetch video details."];
-        return;
-    }
-
-    NSDictionary *videoDetails = playerResponse[@"videoDetails"];
-    NSString *videoTitle = videoDetails[@"title"];
-    NSArray *thumbnails = videoDetails[@"thumbnail"][@"thumbnails"];
-    NSURL *artworkURL = [YouTubeUtils highestQualityThumbnailURLFromArray:thumbnails];
-
-    NSArray *formats = playerResponse[@"streamingData"][@"formats"];
-    NSArray *adaptiveFormats = playerResponse[@"streamingData"][@"adaptiveFormats"];
-    NSDictionary *bestVideo = [YouTubeUtils bestVideoInfoFromFormats:[formats arrayByAddingObjectsFromArray:adaptiveFormats]];
-
-    if (!bestVideo[@"url"] || !videoTitle.length || !artworkURL) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Unable to prepare video download."];
-        return;
-    }
-
-    YouTubeDownloadController *downloadController = [[YouTubeDownloadController alloc] init];
-    downloadController.downloadTitle = videoTitle;
-    downloadController.videoURL = nil;
-    downloadController.audioURL = nil;
-    downloadController.dualURL = bestVideo[@"url"];
-    downloadController.artworkURL = artworkURL;
-    downloadController.downloadOption = 2;
-
-    UIViewController *ancestorController = [self _viewControllerForAncestor];
-    if (ancestorController) {
-        [ancestorController presentViewController:downloadController animated:YES completion:nil];
-    }
-}
-
-%new
-- (void)rebornAudioDownloader:(NSString *)videoID {
-    NSDictionary *playerResponse = [YouTubeExtractor youtubePlayerRequest:@"mediaconnect":videoID];
-    if (![YouTubeUtils validatePlayerResponse:playerResponse]) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Failed to fetch audio details."];
-        return;
-    }
-
-    NSDictionary *videoDetails = playerResponse[@"videoDetails"];
-    NSString *videoTitle = videoDetails[@"title"];
-    NSArray *thumbnails = videoDetails[@"thumbnail"][@"thumbnails"];
-    NSURL *artworkURL = [YouTubeUtils highestQualityThumbnailURLFromArray:thumbnails];
-
-    NSArray *adaptiveFormats = playerResponse[@"streamingData"][@"adaptiveFormats"];
-    NSDictionary *audioInfo = [YouTubeUtils bestAudioInfoFromFormats:adaptiveFormats];
-
-    if (!audioInfo[@"url"] || !videoTitle.length || !artworkURL) {
-        UIViewController *vc = [self _viewControllerForAncestor];
-        if (vc) [vc showAlertWithTitle:@"Error" message:@"Unable to prepare audio download."];
-        return;
-    }
-
-    YouTubeDownloadController *downloadController = [[YouTubeDownloadController alloc] init];
-    downloadController.downloadTitle = videoTitle;
-    downloadController.videoURL = nil;
-    downloadController.audioURL = audioInfo[@"url"];
-    downloadController.dualURL = nil;
-    downloadController.artworkURL = artworkURL;
-    downloadController.downloadOption = 1;
-
-    UIViewController *ancestorController = [self _viewControllerForAncestor];
-    if (ancestorController) {
-        [ancestorController presentViewController:downloadController animated:YES completion:nil];
-    }
-}
 
 %new
 - (void)rebornPlayInExternalApp:(NSString *)videoID {
