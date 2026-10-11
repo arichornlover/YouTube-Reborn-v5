@@ -1,6 +1,3 @@
-[submodule "YouTubeHeader"]
-	path = Dependencies/YouTubeHeader
-	url = https://github.com/PoomSmart/YouTubeHeader.git
 [submodule "Dependencies/YouTubeHeader"]
 	path = Dependencies/YouTubeHeader
 	url = https://github.com/PoomSmart/YouTubeHeader.git

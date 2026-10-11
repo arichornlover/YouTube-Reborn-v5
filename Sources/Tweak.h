@@ -35,6 +35,7 @@
 #import <YouTubeHeader/YTIIconThumbnailRenderer.h>
 #import <YouTubeHeader/YTICompactListItemThumbnailSupportedRenderers.h>
 #import <YouTubeHeader/YTICompactListItemRenderer.h>
+#import <YouTubeHeader/YTIconExtras.h>
 #import <YouTubeHeader/YTICompactLinkRenderer.h>
 #import <YouTubeHeader/_ASDisplayView.h>
 #import <YouTubeHeader/YTIElementRenderer.h>

@@ -109,7 +109,7 @@ static BOOL isAdsReelContentModel(YTReelContentModel *model) {
 %end
 static BOOL isProductList(YTICommand *command) {
     if ([command respondsToSelector:@selector(yt_showEngagementPanelEndpoint)]) {
-        id endpoint = [command yt_showEngagementPanelEndpoint];
+        YTIShowEngagementPanelEndpoint *endpoint = [command yt_showEngagementPanelEndpoint];
         return [endpoint.identifier.tag isEqualToString:@"PAproduct_list"];
     }
     return NO;
