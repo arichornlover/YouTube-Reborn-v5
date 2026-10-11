@@ -68,7 +68,8 @@ cp -RL "$SLICE/$FRAMEWORK_NAME" "$DEST/$FRAMEWORK_NAME"
 rm -rf "$DEST/$FRAMEWORK_NAME/_CodeSignature"
 rm -f "$DEST/$FRAMEWORK_NAME/Info.plist"
 
-BINARY="$DEST/$FRAMEWORK_NAME/$FRAMEWORK_NAME"
+BINARY_NAME="${FRAMEWORK_NAME%.framework}"
+BINARY="$DEST/$FRAMEWORK_NAME/$BINARY_NAME"
 if [ -f "$BINARY" ] && command -v ldid >/dev/null 2>&1; then
   ldid -S "$BINARY" 2>/dev/null || true
 fi
