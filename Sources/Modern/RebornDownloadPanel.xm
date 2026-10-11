@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 #import "RebornDownloadPanel.h"
-#import "YouTubeExtractor.h"
+#import <YouTubeExtractor/YouTubeExtractor.h>
 #import "Controllers/YouTubeUtils.h"
 #import "../UYTSABR.h"
 #import "../UYTMediaKit.h"

@@ -13,6 +13,7 @@
 #import "Controllers/YouTubeUtils.h"
 #import "UYTMediaKit.h"
 #import "UYTSABR.h"
+#import "Modern/RebornDownloadPanel.h"
 
 #import "YTSigDecipher.h"
 
