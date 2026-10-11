@@ -21,6 +21,16 @@ on:
         default: ""
         required: false
         type: string
+      include_lottie:
+        description: "Vendor the official Lottie framework (SwiftUI menu animation)"
+        default: false
+        required: false
+        type: boolean
+      lottie_version:
+        description: "Lottie iOS release to fetch"
+        default: "4.6.0"
+        required: false
+        type: string
       upload_artifact:
         description: "Upload deb as artifact"
         default: true
@@ -89,6 +99,24 @@ jobs:
               sed -i '' 's/| head/2>\/dev\/null | head/g' "$MK" 2>/dev/null || true
             fi
           done
+
+      - name: Restore Lottie cache
+        id: lottie_cache
+        uses: actions/cache/restore@v6
+        with:
+          path: Dependencies/Lottie
+          key: lottie-${{ inputs.lottie_version }}
+
+      - name: Fetch Lottie
+        if: ${{ inputs.include_lottie && steps.lottie_cache.outputs.cache-hit != 'true' }}
+        run: bash Tools/fetch-lottie.sh ${{ inputs.lottie_version }}
+
+      - name: Save Lottie cache
+        if: ${{ inputs.include_lottie && steps.lottie_cache.outputs.cache-hit != 'true' && hashFiles('Dependencies/Lottie/Lottie.framework/**') != '' }}
+        uses: actions/cache/save@v6
+        with:
+          path: Dependencies/Lottie
+          key: ${{ steps.lottie_cache.outputs.cache-primary-key }}
 
       - name: Restore FFmpegKit cache
         id: ffmpeg_cache
