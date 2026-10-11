@@ -556,10 +556,14 @@ static NSString *accessGroupID() {
 + (id)spamSignalsDictionaryWithoutIDFA { return @{}; }
 %end
 %hook YTAdsInnerTubeContextDecorator
-- (void)decorateContext:(id)context { %orig(nil); }
+- (void)decorateContext:(id)context {
+    %orig(nil);
+}
 %end
 %hook YTAccountScopedAdsInnerTubeContextDecorator
-- (void)decorateContext:(id)context { %orig(nil); }
+- (void)decorateContext:(id)context {
+    %orig(nil);
+}
 %end
 %hook YTReelDataSource
 - (YTReelModel *)makeContentModelForEntry:(id)entry {
@@ -2212,7 +2216,9 @@ static NSMutableArray <YTIItemSectionRenderer *> *filteredArray(NSArray <YTIItem
 %group gHideCollapseButton
 %hook YTMainAppControlsOverlayView
 - (BOOL)watchCollapseButtonHidden { return YES; }
-- (void)setWatchCollapseButtonAvailable:(BOOL)available { %orig(available); }
+- (void)setWatchCollapseButtonAvailable:(BOOL)available {
+    %orig(available);
+}
 %end
 %end
 

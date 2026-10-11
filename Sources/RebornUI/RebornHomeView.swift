@@ -105,6 +105,8 @@ struct RebornHomeView: View {
             RebornTabOrderView()
         case .startupPage:
             RebornStartupPageView()
+        case .debugLog:
+            RebornDebugLogView()
         }
     }
 
@@ -122,6 +124,10 @@ struct RebornHomeView: View {
                 .font(.system(size: 12, weight: .bold, design: .rounded))
                 .tracking(2)
                 .foregroundStyle(RebornTheme.accent)
+
+            Text("YouTube \(model.youtubeVersion)")
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .foregroundStyle(.white.opacity(0.6))
 
             HStack(spacing: 8) {
                 versionPill(symbol: "play.rectangle.fill", text: "YouTube \(model.youtubeVersion)")

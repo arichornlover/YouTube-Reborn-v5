@@ -27,5 +27,6 @@
 #import "../Controllers/StartupPageOptionsController.h"
 #import "../Controllers/ReorderPivotBarController.h"
 #import "../Modern/RebornDownloadPanel.h"
+#import "../UYTLog.h"
 
 #endif /* REBORN_BRIDGING_HEADER_H */

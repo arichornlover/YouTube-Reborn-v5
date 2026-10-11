@@ -26,6 +26,7 @@ enum RebornModernScreen: String, Identifiable, Hashable, CaseIterable {
     case notifications
     case tabOrder
     case startupPage
+    case debugLog
 
     var id: String { rawValue }
 
@@ -34,6 +35,7 @@ enum RebornModernScreen: String, Identifiable, Hashable, CaseIterable {
         case .notifications: return "Notifications"
         case .tabOrder: return "Reorder Tabs"
         case .startupPage: return "Startup Tab"
+        case .debugLog: return "Debug Log"
         }
     }
 
@@ -42,6 +44,7 @@ enum RebornModernScreen: String, Identifiable, Hashable, CaseIterable {
         case .notifications: return "Custom notifications tab, icon & badge"
         case .tabOrder: return "Drag to reorder every tab"
         case .startupPage: return "Choose the tab the app opens on"
+        case .debugLog: return "Stream logs & capture errors for bug reports"
         }
     }
 
@@ -50,6 +53,7 @@ enum RebornModernScreen: String, Identifiable, Hashable, CaseIterable {
         case .notifications: return "bell.badge.fill"
         case .tabOrder: return "rectangle.3.group"
         case .startupPage: return "house.fill"
+        case .debugLog: return "ladybug.fill"
         }
     }
 }
@@ -194,7 +198,13 @@ enum RebornOptionRegistry {
                           subtitle: "Open straight to Notifications or another tab",
                           symbol: "house.fill",
                           tint: .green,
-                          destination: .modern(.startupPage))
+                          destination: .modern(.startupPage)),
+            RebornSection(id: "s.modern.debug",
+                          title: "Debug Log",
+                          subtitle: "Stream logs & capture errors for bug reports",
+                          symbol: "ladybug.fill",
+                          tint: .orange,
+                          destination: .modern(.debugLog))
         ]
     }
 

@@ -231,9 +231,9 @@ void UYTLogInstall(void) {
         df.dateFormat = @"yyyy-MM-dd HH:mm:ss";
         NSString *stamp = [df stringFromDate:[NSDate date]];
 #ifdef TWEAK_VERSION
-        UYTWriteLine(@"[UYT-I]", UYTNowStamp(), [NSString stringWithFormat:@"[uYouEnhanced] == session start %@ (tweak %s) ==", stamp, TWEAK_VERSION]);
+        UYTWriteLine(@"[UYT-I]", UYTNowStamp(), [NSString stringWithFormat:@"[YouTube Reborn] == session start %@ (tweak %s) ==", stamp, TWEAK_VERSION]);
 #else
-        UYTWriteLine(@"[UYT-I]", UYTNowStamp(), [NSString stringWithFormat:@"[uYouEnhanced] == session start %@ ==", stamp]);
+        UYTWriteLine(@"[UYT-I]", UYTNowStamp(), [NSString stringWithFormat:@"[YouTube Reborn] == session start %@ ==", stamp]);
 #endif
 
         int fds[2];
@@ -548,16 +548,16 @@ NSString *UYTDebugFullReport(void) {
         NSArray<UYTGroup *> *all = UYTSnapshotGroups();
 
         [s appendString:@"============================================================\n"];
-        [s appendString:@"  uYouEnhanced — Debug Report\n"];
+        [s appendString:@"  YouTube Reborn — Debug Report\n"];
         [s appendString:@"============================================================\n"];
 #ifdef TWEAK_VERSION
         [s appendFormat:@"  tweak    : %s\n", TWEAK_VERSION];
 #endif
         [s appendFormat:@"  device   : %@\n", UIDevice.currentDevice.model ?: @"?"];
         [s appendFormat:@"  iOS      : %@\n", UIDevice.currentDevice.systemVersion ?: @"?"];
-        [s appendFormat:@"  bundle   : %@ v%@\n",
-            [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] ?: @"?",
-            [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"?"];
+        [s appendFormat:@"  youtube  : v%@ (%@)\n",
+            [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"?",
+            [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] ?: @"?"];
         NSDateFormatter *df = [NSDateFormatter new];
         df.dateFormat = @"yyyy-MM-dd HH:mm:ss";
         [s appendFormat:@"  exported : %@\n", [df stringFromDate:[NSDate date]]];
