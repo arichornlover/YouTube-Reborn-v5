@@ -2314,7 +2314,7 @@ static NSMutableArray <YTIItemSectionRenderer *> *filteredArray(NSArray <YTIItem
             ((YTIStringRun *)(newItemSectionSupportedRenderers.compactListItemRenderer.title.runsArray.firstObject)).text = @"Downloads";
             newItemSectionSupportedRenderers.compactListItemRenderer.thumbnail.iconThumbnailRenderer.icon.iconType = YT_DOWNLOADS_OUTLINE;
             [subContentsArray insertObject:newItemSectionSupportedRenderers atIndex:yourVideosCellIndex + 1];
-            subContentsArray[yourVideosCellIndex].accessibilityLabel = @"uYouEnhanced Modified";
+            subContentsArray[yourVideosCellIndex].accessibilityLabel = @"YouTube Reborn Modified";
             yourVideosCellIndex = -1;
         }
     }

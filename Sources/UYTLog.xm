@@ -223,7 +223,7 @@ void UYTLogInstall(void) {
     dispatch_once(&once, ^{
         UYTLogLock = [NSObject new];
         UYTLogRing = [NSMutableArray array];
-        UYTLogFile = [UYTDocDir() stringByAppendingPathComponent:@"uYouEnhanced-Debug.log"];
+        UYTLogFile = [UYTDocDir() stringByAppendingPathComponent:@"Reborn-Debug.log"];
         UYTRotateLogFile();
         UYTSessionStart = UYTNowStamp();
 

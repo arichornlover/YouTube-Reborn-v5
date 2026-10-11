@@ -108,10 +108,10 @@ static void UYTFFProbe(void) {
 NSInteger UYTFFActiveBackend(void) {
     UYTFFProbe();
     if (UYTFFCachedBackend == UYTFFBackendNone) {
-        UYTDebugWarn(@"[uYouPatches] ffmpeg unavailable: %@", UYTFFUnavailableReason());
+        UYTDebugWarn(@"[Reborn] ffmpeg unavailable: %@", UYTFFUnavailableReason());
     } else {
         BOOL ours = ![UYTFFLoadedRoot isEqualToString:@"@executable_path/Frameworks"];
-        UYTDebugInfo(@"[uYouPatches] ffmpeg backend %ld ready from %@ (%@)",
+        UYTDebugInfo(@"[Reborn] ffmpeg backend %ld ready from %@ (%@)",
                      (long)UYTFFCachedBackend, UYTFFLoadedRoot ?: @"?",
                      ours ? @"our bundle" : @"YouTube fallback");
     }
@@ -138,14 +138,14 @@ BOOL UYTFFRun(NSArray<NSString *> *arguments) {
     NSString *command = UYTFFCommandLine(arguments);
 
     if (UYTFFCachedBackend == UYTFFBackendNone) {
-        UYTDebugErr(@"[uYouPatches] ffmpeg backend unavailable (%@) - command dropped: %@",
+        UYTDebugErr(@"[Reborn] ffmpeg backend unavailable (%@) - command dropped: %@",
                     UYTFFUnavailableReason(), command);
         return NO;
     }
 
     Class kitClass = objc_getClass(UYTFFCachedBackend == UYTFFBackendKitNext ? "FFmpegKit" : "MobileFFmpeg");
     if (!kitClass) {
-        UYTDebugErr(@"[uYouPatches] ffmpeg class missing - command dropped: %@", command);
+        UYTDebugErr(@"[Reborn] ffmpeg class missing - command dropped: %@", command);
         return NO;
     }
 
@@ -208,14 +208,14 @@ BOOL UYTFFRun(NSArray<NSString *> *arguments) {
             }
         }
     } @catch (NSException *e) {
-        UYTDebugErr(@"[uYouPatches] ffmpeg threw while running: %@ (%@)", command, e);
+        UYTDebugErr(@"[Reborn] ffmpeg threw while running: %@ (%@)", command, e);
         return NO;
     }
 
     if (ok) {
-        UYTDebugInfo(@"[uYouPatches] ffmpeg ok: %@", command);
+        UYTDebugInfo(@"[Reborn] ffmpeg ok: %@", command);
     } else {
-        UYTDebugWarn(@"[uYouPatches] ffmpeg FAILED (rc=%ld, %@): %@%@", rc,
+        UYTDebugWarn(@"[Reborn] ffmpeg FAILED (rc=%ld, %@): %@%@", rc,
                      isKitNext ? @"FFmpegKit" : @"MobileFFmpeg", command,
                      detail.length ? [@" -> " stringByAppendingString:detail] : @"");
     }
@@ -274,14 +274,14 @@ BOOL UYTFFConvertWebmAudioToM4a(NSString *webmPath, NSString *m4aPath) {
     if (!webmPath.length || !m4aPath.length) return NO;
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![fm fileExistsAtPath:webmPath]) {
-        UYTDebugWarn(@"[uYouPatches] convert: input missing: %@", webmPath);
+        UYTDebugWarn(@"[Reborn] convert: input missing: %@", webmPath);
         return NO;
     }
     if ([fm fileExistsAtPath:m4aPath]) [fm removeItemAtPath:m4aPath error:nil];
 
     unsigned long long inSize = UYTSizeOfFile(webmPath);
     UYTContainer container = UYTProbeContainer(webmPath);
-    UYTDebugInfo(@"[uYouPatches] convert %@ (container=%ld, %llu bytes) -> %@",
+    UYTDebugInfo(@"[Reborn] convert %@ (container=%ld, %llu bytes) -> %@",
                  webmPath, (long)container, inSize, m4aPath);
 
     // The .webm slot name lies: uYou names EVERY audio leg .webm even when the
@@ -290,10 +290,10 @@ BOOL UYTFFConvertWebmAudioToM4a(NSString *webmPath, NSString *m4aPath) {
     if (container == UYTContainerMP4) {
         NSError *err = nil;
         if ([fm copyItemAtPath:webmPath toPath:m4aPath error:&err]) {
-            UYTDebugInfo(@"[uYouPatches] audio was already MP4 - copied to %@ without transcode", m4aPath);
+            UYTDebugInfo(@"[Reborn] audio was already MP4 - copied to %@ without transcode", m4aPath);
             return YES;
         }
-        UYTDebugWarn(@"[uYouPatches] copying mp4 audio to %@ failed: %@",
+        UYTDebugWarn(@"[Reborn] copying mp4 audio to %@ failed: %@",
                      m4aPath, err.localizedDescription ?: @"unknown");
         return NO;
     }
