@@ -13,7 +13,7 @@ on:
         type: boolean
       sdk_version:
         description: "iOS SDK Version"
-        default: "17.5"
+        default: "26.5"
         required: true
         type: string
       reborn_version:
@@ -87,7 +87,7 @@ jobs:
           submodules: recursive
 
       - name: Install Dependencies
-        run: brew install ldid dpkg make wget unzip jq gnu-sed
+        run: brew install ldid dpkg make wget unzip jq gnu-sed autoconf automake libtool pkgconf
 
       - name: Set PATH
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
@@ -215,11 +215,13 @@ jobs:
         run: |
           (echo 'THEOS_IGNORE_PARALLEL_BUILDING_NOTICE = yes' >> ~/.theosrc)
           cd ${{ github.workspace }}/main
-          sed -i '' "12s#.*#BUNDLE_ID = ${{ env.BUNDLE_ID }}#g" Makefile
-          sed -i '' "11s#.*#DISPLAY_NAME = ${{ env.APP_NAME }}#g" Makefile
+          sed -i '' "s/^BUNDLE_ID .*/BUNDLE_ID = ${{ env.BUNDLE_ID }}/" Makefile
+          sed -i '' "s/^DISPLAY_NAME .*/DISPLAY_NAME = ${{ env.APP_NAME }}/" Makefile
+          sed -i '' "s/^TARGET .*/TARGET = iphone:clang:${{ inputs.sdk_version }}:16.0/" Makefile
+          sed -i '' "s#^export SDK_PATH .*#export SDK_PATH = \$(THEOS)/sdks/iPhoneOS${{ inputs.sdk_version }}.sdk/#" Makefile
           make package FINALPACKAGE=1
           (mv "packages/$(ls -t packages | head -n1)" "packages/YouTube Reborn_${{ env.YOUTUBE_VERSION }}_${{ env.REBORN_VERSION }}.ipa")
-          echo "package=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
+          echo "package=$(ls -t packages | head -n1)" >> $GITHUB_OUTPUT
           echo -e "==> \033[1mSHASUM256: $(shasum -a 256 packages/*.ipa | cut -f1 -d' ')\033[0m"
           echo -e "==> \033[1mBundle ID: ${{ env.BUNDLE_ID }}\033[0m"
 

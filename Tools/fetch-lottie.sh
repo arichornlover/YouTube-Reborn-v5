@@ -50,15 +50,21 @@ rm -rf "$XCFRAMEWORK"
 unzip -q -o "$ZIP" -d "$TMP_DIR"
 [ -d "$XCFRAMEWORK" ] || die "could not find Lottie.xcframework in the archive"
 
-# Pick the device (non-simulator) slice. Order matters in case a release only
-# ships newer multi-arch names; fall back to whichever contains Lottie.framework.
-SLICE="$(find "$XCFRAMEWORK" -maxdepth 1 -type d -name 'ios-*' | grep -v simulator | head -n 1)"
-[ -n "$SLICE" ] && [ -d "$SLICE" ] || die "no device slice found in $XCFRAMEWORK"
+# Pick the iOS device slice. Prefer the exact `ios-arm64` slice and NEVER
+# stage the simulator or Mac Catalyst slices: Catalyst ships a versioned
+# framework (Versions/A + symlinks) whose symlink layout breaks `-f` checks
+# and confuses the linker.
+device_slices() {
+  find "$XCFRAMEWORK" -maxdepth 1 -type d -name 'ios-*' | grep -Ev 'simulator|maccatalyst' || true
+}
+SLICE="$(device_slices | grep -x "$XCFRAMEWORK/ios-arm64" | head -n 1 || true)"
+[ -n "$SLICE" ] || SLICE="$(device_slices | head -n 1)"
+[ -n "$SLICE" ] && [ -d "$SLICE" ] || die "no iOS device slice found in $XCFRAMEWORK"
 [ -d "$SLICE/$FRAMEWORK_NAME" ] || die "device slice $SLICE does not contain $FRAMEWORK_NAME"
 
 info "staging $FRAMEWORK_NAME into ${DEST#"$ROOT/"}"
 rm -rf "$DEST/$FRAMEWORK_NAME"
-cp -R "$SLICE/$FRAMEWORK_NAME" "$DEST/$FRAMEWORK_NAME"
+cp -RL "$SLICE/$FRAMEWORK_NAME" "$DEST/$FRAMEWORK_NAME"
 rm -rf "$DEST/$FRAMEWORK_NAME/_CodeSignature"
 rm -f "$DEST/$FRAMEWORK_NAME/Info.plist"
 
@@ -67,5 +73,10 @@ if [ -f "$BINARY" ] && command -v ldid >/dev/null 2>&1; then
   ldid -S "$BINARY" 2>/dev/null || true
 fi
 
-[ -f "$BINARY" ] || die "Lottie binary missing after staging"
-info "Lottie $VERSION ready at ${DEST#"$ROOT/"}/$FRAMEWORK_NAME"
+if [ ! -f "$BINARY" ] || [ ! -s "$BINARY" ]; then
+  printf '\033[31merror:\033[0m Lottie binary missing after staging (%s)\n' "$BINARY" >&2
+  ls -la "$DEST/$FRAMEWORK_NAME" >&2 || true
+  die "staging failed"
+fi
+SIZE="$(wc -c < "$BINARY" 2>/dev/null || true)"
+info "Lottie $VERSION ready at ${DEST#"$ROOT/"}/$FRAMEWORK_NAME ($SIZE bytes)"

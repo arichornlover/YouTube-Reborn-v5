@@ -1,5 +1,5 @@
-TARGET = iphone:clang:17.5:16.0
-export SDK_PATH = $(THEOS)/sdks/iPhoneOS17.5.sdk/
+TARGET = iphone:clang:26.5:16.0
+export SDK_PATH = $(THEOS)/sdks/iPhoneOS26.5.sdk/
 export SYSROOT = $(SDK_PATH)
 YouTubeReborn_USE_FLEX = 0
 YouTubeReborn_USE_FISHHOOK = 0

@@ -13,7 +13,7 @@ on:
         type: boolean
       sdk_version:
         description: "iOS SDK Version"
-        default: "17.5"
+        default: "26.5"
         required: true
         type: string
       commit_id:
@@ -56,7 +56,7 @@ jobs:
           submodules: recursive
 
       - name: Install Dependencies
-        run: brew install ldid dpkg make wget unzip jq gnu-sed
+        run: brew install ldid dpkg make wget unzip jq gnu-sed autoconf automake libtool pkgconf
 
       - name: Set PATH
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
