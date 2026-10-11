@@ -1715,18 +1715,18 @@ static NSMutableArray <YTIItemSectionRenderer *> *filteredArray(NSArray <YTIItem
 %end
 %hook SponsorBlockSettingsController
 - (void)viewDidLoad {
+    %orig;
     if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        %orig;
         self.tableView.backgroundColor = rebornHexColour;
-    } else { return %orig; }
+    }
 }
 %end
 %hook SponsorBlockViewController
 - (void)viewDidLoad {
+    %orig;
     if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        %orig;
         self.view.backgroundColor = rebornHexColour;
-    } else { return %orig; }
+    }
 }
 %end
 %hook YTAsyncCollectionView

@@ -213,16 +213,17 @@ static char RebornDirectTaskKey;
     __weak typeof(self) weakSelf = self;
     NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (!weakSelf) return;
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
             NSNumber *taskID = @(task.taskIdentifier);
-            NSProgress *observer = weakSelf->_directProgressObservers[taskID];
+            NSProgress *observer = strongSelf->_directProgressObservers[taskID];
             if (observer) {
-                [observer removeObserver:weakSelf forKeyPath:@"fractionCompleted" context:RebornDirectProgressContext];
+                [observer removeObserver:strongSelf forKeyPath:@"fractionCompleted" context:RebornDirectProgressContext];
             }
-            [weakSelf->_directProgressObservers removeObjectForKey:taskID];
-            [weakSelf->_directProgress removeObjectForKey:taskID];
-            [weakSelf->_directCompletion removeObjectForKey:taskID];
-            [weakSelf->_directTasks removeObjectForKey:taskID];
+            [strongSelf->_directProgressObservers removeObjectForKey:taskID];
+            [strongSelf->_directProgress removeObjectForKey:taskID];
+            [strongSelf->_directCompletion removeObjectForKey:taskID];
+            [strongSelf->_directTasks removeObjectForKey:taskID];
             completion(location, response, error);
         });
     }];

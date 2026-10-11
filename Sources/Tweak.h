@@ -35,7 +35,6 @@
 #import <YouTubeHeader/YTIIconThumbnailRenderer.h>
 #import <YouTubeHeader/YTICompactListItemThumbnailSupportedRenderers.h>
 #import <YouTubeHeader/YTICompactListItemRenderer.h>
-#import <YouTubeHeader/YTIconExtras.h>
 #import <YouTubeHeader/YTICompactLinkRenderer.h>
 #import <YouTubeHeader/_ASDisplayView.h>
 #import <YouTubeHeader/YTIElementRenderer.h>
@@ -179,6 +178,10 @@
 
 @interface YTIPivotBarItemRenderer : NSObject
 - (NSString *)pivotIdentifier;
+- (void)setPivotIdentifier:(NSString *)pivotIdentifier;
+- (id)icon;
+- (void)setNavigationEndpoint:(id)navigationEndpoint;
+- (void)setTitle:(id)title;
 @end
 
 @interface YTIPivotBarIconOnlyItemRenderer : GPBMessage
@@ -188,6 +191,7 @@
 @interface YTIPivotBarSupportedRenderers : NSObject
 - (YTIPivotBarItemRenderer *)pivotBarItemRenderer;
 - (YTIPivotBarIconOnlyItemRenderer *)pivotBarIconOnlyItemRenderer;
+- (void)setPivotBarItemRenderer:(YTIPivotBarItemRenderer *)pivotBarItemRenderer;
 @end
 
 @interface YTIPivotBarRenderer : NSObject

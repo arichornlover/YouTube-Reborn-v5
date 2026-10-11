@@ -15,8 +15,14 @@
 
 #import "../Tweak.h"
 
+#import <YouTubeHeader/YTColor.h>
+#import <YouTubeHeader/QTMIcon.h>
+#import <YouTubeHeader/YTBrowseViewController.h>
+#import <YouTubeHeader/YTICommand.h>
+#import <YouTubeHeader/YTIBrowseEndpoint.h>
+
 #ifndef YT_NOTIFICATIONS
-#define YT_NOTIFICATIONS 264
+#define YT_NOTIFICATIONS ((YTIcon)264)
 #endif
 
 static inline BOOL RebornNotificationsEnabled(void) {
@@ -180,7 +186,7 @@ static NSInteger _notificationsBadgeCount = 0;
 %hook YTBrowseViewController
 - (void)viewDidLoad {
     %orig;
-    id navEndpoint = nil;
+    YTICommand *navEndpoint = nil;
     for (NSString *key in @[@"navigationEndpoint", @"navEndpoint", @"_navEndpoint"]) {
         @try {
             id value = [self valueForKey:key];
