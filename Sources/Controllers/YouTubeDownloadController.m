@@ -1,17 +1,18 @@
 #import "YouTubeDownloadController.h"
 #import "../UYTMediaKit.h"
-#import "../../Dependencies/AFNetworking/AFNetworking.h"
 
 @interface YouTubeDownloadController () {
     UIImageView *artworkImage;
     UILabel *titleLabel;
     UILabel *downloadPercentLabel;
     UILabel *noticeLabel;
+    NSString *activeProgressFormat;
 }
 - (void)coloursView;
 - (void)videoDownloaderPartOne;
 - (void)videoDownloaderPartTwo;
 - (void)audioDownloader;
+@property (nonatomic, copy) void(^progressCleanupHandler)(void);
 @end
 
 @implementation YouTubeDownloadController
@@ -87,103 +88,113 @@
     }
 }
 
-- (void)videoDownloaderPartOne {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.videoURL];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (self.progressCleanupHandler) {
+        self.progressCleanupHandler();
+        self.progressCleanupHandler = nil;
+    }
+}
 
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"fractionCompleted"] && [object isKindOfClass:[NSProgress class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress (Part 1/2): %.02f%%", downloadPercent];
+            if (self->activeProgressFormat) {
+                double downloadPercent = [(NSProgress *)object fractionCompleted] * 100.0;
+                self->downloadPercentLabel.text = [NSString stringWithFormat:self->activeProgressFormat, downloadPercent];
+            }
         });
-    } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        [[NSFileManager defaultManager] moveItemAtPath:[filePath path] toPath:[NSString stringWithFormat:@"%@/video.mp4", documentsDirectory] error:nil];
-        [self videoDownloaderPartTwo];
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
+- (NSURLSessionDownloadTask *)downloadTaskForURL:(NSURL *)url progressFormat:(NSString *)format completion:(void (^)(NSURL *location, NSURLResponse *response, NSError *error))completion {
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+
+    activeProgressFormat = format;
+    __weak typeof(self) weakSelf = self;
+    NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        NSLog(@"[YouTubeReborn] download finished: %@, error: %@", [response URL], error);
+        if (weakSelf.progressCleanupHandler) {
+            weakSelf.progressCleanupHandler();
+            weakSelf.progressCleanupHandler = nil;
+        }
+        completion(location, response, error);
     }];
+
+    NSProgress *progress = downloadTask.progress;
+    [progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
+    self.progressCleanupHandler = ^{
+        [progress removeObserver:weakSelf forKeyPath:@"fractionCompleted"];
+    };
     [downloadTask resume];
+    return downloadTask;
+}
+
+- (void)videoDownloaderPartOne {
+    __weak typeof(self) weakSelf = self;
+    [self downloadTaskForURL:self.videoURL progressFormat:@"Progress (Part 1/2): %.02f%%" completion:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (!error && location) {
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            [[NSFileManager defaultManager] moveItemAtURL:location toURL:[documentsDirectoryURL URLByAppendingPathComponent:@"video.mp4"] error:nil];
+            [weakSelf videoDownloaderPartTwo];
+        }
+    }];
 }
 
 - (void)videoDownloaderPartTwo {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.audioURL];
-
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress (Part 2/2): %.02f%%", downloadPercent];
-        });
-    } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+    __weak typeof(self) weakSelf = self;
+    [self downloadTaskForURL:self.audioURL progressFormat:@"Progress (Part 2/2): %.02f%%" completion:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (error || !location) {
+            [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSCharacterSet *notAllowedChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
-    UYTFFRun(@[@"-i", filePath, @"-c:a", @"libmp3lame", @"-q:a", @"8", [NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory]]);
-    UYTFFRun(@[@"-i", [NSString stringWithFormat:@"%@/video.mp4", documentsDirectory], @"-i", [NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory], @"-c:v", @"copy", @"-c:a", @"aac", [NSString stringWithFormat:@"%@/output.mp4", documentsDirectory]]);
-        [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/output.mp4", documentsDirectory] toPath:[NSString stringWithFormat:@"%@/%@.mp4", documentsDirectory, [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]] error:nil];
-        [[NSFileManager defaultManager] removeItemAtPath:[filePath path] error:nil];
+        UYTFFRun(@[@"-i", [location path], @"-c:a", @"libmp3lame", @"-q:a", @"8", [NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory]]);
+        UYTFFRun(@[@"-i", [NSString stringWithFormat:@"%@/video.mp4", documentsDirectory], @"-i", [NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory], @"-c:v", @"copy", @"-c:a", @"aac", [NSString stringWithFormat:@"%@/output.mp4", documentsDirectory]]);
+        [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/output.mp4", documentsDirectory] toPath:[NSString stringWithFormat:@"%@/%@.mp4", documentsDirectory, [[weakSelf.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]] error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:[location path] error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/video.mp4", documentsDirectory] error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/audio.mp3", documentsDirectory] error:nil];
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
-    [downloadTask resume];
 }
 
 - (void)audioDownloader {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.audioURL];
-
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress: %.02f%%", downloadPercent];
-        });
-    } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+    __weak typeof(self) weakSelf = self;
+    [self downloadTaskForURL:self.audioURL progressFormat:@"Progress: %.02f%%" completion:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (error || !location) {
+            [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSCharacterSet *notAllowedChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
         NSString *safeTitle = [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
-    UYTFFRun(@[@"-i", filePath, @"-c:a", @"libmp3lame", @"-q:a", @"8", [NSString stringWithFormat:@"%@/%@.mp3", documentsDirectory, safeTitle]]);
-        [[NSFileManager defaultManager] removeItemAtPath:[filePath path] error:nil];
+        UYTFFRun(@[@"-i", [location path], @"-c:a", @"libmp3lame", @"-q:a", @"8", [NSString stringWithFormat:@"%@/%@.mp3", documentsDirectory, safeTitle]]);
+        [[NSFileManager defaultManager] removeItemAtPath:[location path] error:nil];
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
-    [downloadTask resume];
 }
 
 - (void)shortsDownloader {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.dualURL];
-
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            float downloadPercent = downloadProgress.fractionCompleted * 100;
-            downloadPercentLabel.text = [NSString stringWithFormat:@"Progress: %.02f%%", downloadPercent];
-        });
-    } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+    [self downloadTaskForURL:self.dualURL progressFormat:@"Progress: %.02f%%" completion:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (error || !location) {
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSCharacterSet *notAllowedChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
-        [[NSFileManager defaultManager] moveItemAtPath:[filePath path] toPath:[NSString stringWithFormat:@"%@/%@.mp4", documentsDirectory, [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]] error:nil];
-        [[NSFileManager defaultManager] removeItemAtPath:[filePath path] error:nil];
+        [[NSFileManager defaultManager] moveItemAtPath:[location path] toPath:[NSString stringWithFormat:@"%@/%@.mp4", documentsDirectory, [[self.downloadTitle componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]] error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:[location path] error:nil];
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
-    [downloadTask resume];
 }
 
 - (void)coloursView {
