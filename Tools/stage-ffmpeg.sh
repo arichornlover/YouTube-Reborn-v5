@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Stages FFmpegKitNext frameworks into Bundles/uYouMedia.bundle before packaging.
+# Stages FFmpegKitNext frameworks into Bundles/YouTubeRebornMedia.bundle before packaging.
 #
 # Run automatically by the Makefile's before-package:: hook with the source
 # Bundles/ directory as $1. Theos-jailed embeds $(TWEAK_NAME)_EMBED_BUNDLES from

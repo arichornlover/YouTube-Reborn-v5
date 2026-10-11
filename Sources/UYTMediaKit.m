@@ -32,13 +32,8 @@ static NSString *UYTMediaBundlePath(void) {
     dispatch_once(&onceToken, ^{
         NSString *found = [[NSBundle mainBundle] pathForResource:@"YouTubeRebornMedia" ofType:@"bundle"];
         if (!found.length) {
-            found = [[NSBundle mainBundle] pathForResource:@"uYouMedia" ofType:@"bundle"];
-        }
-        if (!found.length) {
             for (NSString *candidate in @[@"/var/jb/Library/Application Support/YouTubeRebornMedia.bundle",
-                                          @"/Library/Application Support/YouTubeRebornMedia.bundle",
-                                          @"/var/jb/Library/Application Support/uYouMedia.bundle",
-                                          @"/Library/Application Support/uYouMedia.bundle"]) {
+                                          @"/Library/Application Support/YouTubeRebornMedia.bundle"]) {
                 if ([[NSFileManager defaultManager] fileExistsAtPath:candidate]) { found = candidate; break; }
             }
         }
