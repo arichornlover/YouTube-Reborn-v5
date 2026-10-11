@@ -36,4 +36,4 @@ include $(THEOS_MAKE_PATH)/aggregate.mk
 
 .PHONY: before-package
 before-package::
-	@bash Tools/stage-ffmpeg.sh "$$(THEOS_PROJECT_DIR)/Bundles"
+	@bash Tools/stage-ffmpeg.sh "$(THEOS_PROJECT_DIR)/Bundles"

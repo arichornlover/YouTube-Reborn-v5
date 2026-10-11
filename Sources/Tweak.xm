@@ -80,8 +80,8 @@ static NSString *accessGroupID() {
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
     if (status == errSecItemNotFound)
         status = SecItemAdd((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
-        if (status != errSecSuccess)
-            return nil;
+    if (status != errSecSuccess)
+        return nil;
     NSString *accessGroup = [(__bridge NSDictionary *)result objectForKey:(__bridge NSString *)kSecAttrAccessGroup];
 
     return accessGroup;
@@ -150,7 +150,8 @@ static NSString *accessGroupID() {
 }
 // Fix Google Sign in by @PoomSmart and @level3tjg (qnblackcat/uYouPlus#684)
 - (NSDictionary *)infoDictionary {
-    NSMutableDictionary *info = %orig.mutableCopy;
+    NSDictionary *original = %orig;
+    NSMutableDictionary *info = [original mutableCopy];
     NSString *altBundleIdentifier = info[@"ALTBundleIdentifier"];
     if (altBundleIdentifier) info[@"CFBundleIdentifier"] = altBundleIdentifier;
     return info;
@@ -257,7 +258,8 @@ static NSString *accessGroupID() {
 		youtubeRebornLightSettingsPath = ROOT_PATH_NS(@"/Library/Application Support/YouTubeReborn.bundle/ytrebornbuttonwhite.png");
         youtubeRebornDarkSettingsPath = ROOT_PATH_NS(@"/Library/Application Support/YouTubeReborn.bundle/ytrebornbuttonblack.png");
     }
-    NSMutableArray *retVal = %orig.mutableCopy;
+    id original = %orig;
+    NSMutableArray *retVal = [original mutableCopy];
     [self.youtubeRebornButton removeFromSuperview];
     [self addSubview:self.youtubeRebornButton];
     if (!self.youtubeRebornButton) {
@@ -277,7 +279,8 @@ static NSString *accessGroupID() {
     return retVal;
 }
 - (NSMutableArray *)visibleButtons {
-    NSMutableArray *retVal = %orig.mutableCopy;
+    id original = %orig;
+    NSMutableArray *retVal = [original mutableCopy];
     [self setLeadingPadding:+10];
     if (self.youtubeRebornButton) {
         [self.youtubeRebornButton removeFromSuperview];
