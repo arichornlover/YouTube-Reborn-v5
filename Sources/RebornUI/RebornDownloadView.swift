@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import UIKit
 
 // MARK: - Objective-C sheet presenter
 
@@ -105,7 +106,7 @@ final class RebornDownloadModel: ObservableObject {
     }
 
     private func buildTiers() {
-        let engine = RebornDownloadEngine.sharedEngine()
+        let engine = RebornDownloadEngine.shared()
 
         var videoByHeight: [Int: RebornStreamFormat] = [:]
         for format in payload.videoFormats {
@@ -160,7 +161,7 @@ final class RebornDownloadModel: ObservableObject {
         guard canDownload, !isRunning else { return }
         runSpeedTimer()
 
-        let engine = RebornDownloadEngine.sharedEngine()
+        let engine = RebornDownloadEngine.shared()
         let progressHandler: RebornDownloadProgress = { phase, fraction, bytes in
             DispatchQueue.main.async {
                 self.consumeProgress(phase: phase, fraction: fraction, bytes: bytes)

@@ -42,7 +42,7 @@ final class RebornHomeModel: ObservableObject {
             get: { [weak self] in self?.values[key] ?? fallback },
             set: { [weak self] newValue in
                 self?.values[key] = newValue
-                self?.store.set(newValue, forKey: key)
+                self?.store.set(newValue, for: key)
             }
         )
     }

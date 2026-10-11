@@ -40,7 +40,7 @@ struct RebornTabOrderView: View {
     }
 
     private static func load() -> [RebornTabItem] {
-        var tabs = defaultTabs()
+        let tabs = defaultTabs()
         guard let stored = RebornSettingsStore.shared.object("kTabOrder") as? [String], !stored.isEmpty else {
             return tabs
         }

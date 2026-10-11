@@ -127,6 +127,6 @@ struct RebornLottiePlayer: UIViewRepresentable {
         return view
     }
 
-    func updateUIViewController(_ uiView: LottieAnimationView, context: Context) {}
+    func updateUIView(_ uiView: LottieAnimationView, context: Context) {}
 }
 #endif
