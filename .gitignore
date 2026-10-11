@@ -1,3 +1,13 @@
 .theos
 .DS_Store
-packages
+packages/
+tmp/
+*.ipa
+.vscode
+# FFmpegKit frameworks staged into the bundle by Tools/stage-ffmpeg.sh - never commit them
+/Bundles/YouTubeRebornMedia.bundle/*.framework/
+/Bundles/YouTubeRebornMedia.bundle/*.framework
+# FFmpegKit source build output and caches
+/modules/
+/Vendor/
+/.cache/

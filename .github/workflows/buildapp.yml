@@ -6,18 +6,23 @@ name: Build the YouTube Reborn ipa
 on:
   workflow_dispatch:
     inputs:
+      build_ffmpeg:
+        description: "Build FFmpegKit from source (cached; first run takes 30-90 min)"
+        default: true
+        required: false
+        type: boolean
+      sdk_version:
+        description: "iOS SDK Version"
+        default: "26.5"
+        required: true
+        type: string
       reborn_version:
         description: "The version of Reborn"
-        default: "4.2.8"
+        default: "5.0.0"
         required: true
         type: string
       decrypted_youtube_url:
         description: "The direct URL to the decrypted YouTube ipa"
-        default: ""
-        required: true
-        type: string
-      youtube_version:
-        description: "The version of YouTube"
         default: ""
         required: true
         type: string
@@ -31,12 +36,32 @@ on:
         default: "YouTube"
         required: true
         type: string
+      commit_id:
+        description: "(Optional) Commit ID to build at"
+        default: ""
+        required: false
+        type: string
+      include_lottie:
+        description: "Vendor the official Lottie framework (SwiftUI menu animation)"
+        default: false
+        required: false
+        type: boolean
+      lottie_version:
+        description: "Lottie iOS release to fetch"
+        default: "4.6.0"
+        required: false
+        type: string
+      upload_artifact:
+        description: "Upload IPA as artifact"
+        default: true
+        required: false
+        type: boolean
       create_release:
         description: "Create a draft release"
         default: true
         required: false
         type: boolean
-  
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -50,43 +75,46 @@ jobs:
 
     steps:
       - name: Checkout Main
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           path: main
+          ref: ${{ github.event.inputs.commit_id || github.ref }}
           submodules: recursive
 
       - name: Install Dependencies
-        run: brew install ldid dpkg
+        run: brew install ldid dpkg make wget unzip jq gnu-sed autoconf automake libtool pkgconf
+
+      - name: Set PATH
+        run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Setup Theos
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
-          repository: RootHide/theos
+          repository: theos/theos
           ref: master
           path: theos
           submodules: recursive
-      
-      - name: Caching
+
+      - name: SDK Caching
         id: SDK
-        uses: actions/cache@v4.2.3
-        env:
-          cache-name: iOS-17.5-SDK
+        uses: actions/cache@v6.1.0
         with:
           path: theos/sdks/
-          key: ${{ env.cache-name }}
+          key: iOS-${{ inputs.sdk_version }}-SDK
 
-      - name: Download iOS 17.5 SDK
+      - name: Download iOS SDK
         if: steps.SDK.outputs.cache-hit != 'true'
         run: |
-          git clone -n --depth=1 --filter=tree:0 https://github.com/arichornlover/sdks.git && cd sdks
-          git sparse-checkout set --no-cone iPhoneOS17.5.sdk
-          git checkout
+          git clone --quiet -n --depth=1 --filter=tree:0 https://github.com/aricloverALT/sdks/ sdks
+          cd sdks
+          git sparse-checkout set --no-cone iPhoneOS${{ inputs.sdk_version }}.sdk
+          git checkout --quiet
           mv *.sdk $THEOS/sdks
         env:
           THEOS: ${{ github.workspace }}/theos
 
       - name: Setup Theos Jailed
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: qnblackcat/theos-jailed
           ref: master
@@ -94,63 +122,139 @@ jobs:
           submodules: recursive
 
       - name: Install Theos Jailed
-        run: |
-          ./theos-jailed/install
+        run: ./theos-jailed/install
         env:
           THEOS: ${{ github.workspace }}/theos
 
-      - name: Prepare YouTube iPA
+      - name: Fix Theos broken pipe issue
+        run: |
+          find $THEOS -name "*.sh" -type f | while read -r SCRIPT; do
+            if grep -q '| head' "$SCRIPT" 2>/dev/null; then
+              sed -i '' 's/| head/2>\/dev\/null | head/g' "$SCRIPT" 2>/dev/null || true
+              echo "Patched: $SCRIPT"
+            fi
+          done
+          find $THEOS -name "*.mk" -type f | while read -r MK; do
+            if grep -q '| head' "$MK" 2>/dev/null; then
+              sed -i '' 's/| head/2>\/dev\/null | head/g' "$MK" 2>/dev/null || true
+              echo "Patched: $MK"
+            fi
+          done
+          echo "Broken pipe fixes applied"
+
+      - name: Hash YouTube ipa url
+        run: |
+          URL_YT="$(jq -r '.inputs.decrypted_youtube_url' $GITHUB_EVENT_PATH)"
+          echo ::add-mask::$URL_YT
+          echo URL_YT=$URL_YT >> $GITHUB_ENV
+
+      - name: Download & validate YouTube iPA
         run: |
           curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
-          wget "$YOUTUBE_URL" --no-verbose -O main/YouTube.ipa
-          unzip -q main/YouTube.ipa -d main/tmp
-          rm -rf main/tmp/Payload/YouTube.app/PlugIns/*
-
+          wget "$YOUTUBE_URL" --quiet --no-verbose -O main/YouTube.ipa
+          file_type=$(file --mime-type -b main/YouTube.ipa)
+          if [ "$file_type" != "application/x-ios-app" ] && [ "$file_type" != "application/zip" ]; then
+            echo "::error::Downloaded file is not a valid IPA. Detected type: $file_type."
+            exit 1
+          fi
         env:
           THEOS: ${{ github.workspace }}/theos
-          REBORN_VERSION: ${{ inputs.reborn_version }}
-          YOUTUBE_URL: ${{ inputs.decrypted_youtube_url }}
+          YOUTUBE_URL: ${{ env.URL_YT }}
+
+      - name: Prepare YouTube iPA
+        id: prepare_youtube
+        run: |
+          unzip -q main/YouTube.ipa -d main/tmp
+          rm -rf main/tmp/Payload/YouTube.app/PlugIns/*
+          youtube_version=$(defaults read "${{ github.workspace }}/main/tmp/Payload/YouTube.app/Info" CFBundleVersion)
+          echo "YT_VERSION=$youtube_version" >> $GITHUB_ENV
+          echo "yt_version=${youtube_version}" >> $GITHUB_OUTPUT
+          echo "==> Detected YouTube version: ${youtube_version}"
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Restore Lottie cache
+        id: lottie_cache
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: main/Dependencies/Lottie
+          key: lottie-${{ inputs.lottie_version }}
+
+      - name: Fetch Lottie
+        if: ${{ inputs.include_lottie && steps.lottie_cache.outputs.cache-hit != 'true' }}
+        run: |
+          cd main
+          bash Tools/fetch-lottie.sh ${{ inputs.lottie_version }}
+
+      - name: Save Lottie cache
+        if: ${{ inputs.include_lottie && steps.lottie_cache.outputs.cache-hit != 'true' && hashFiles('main/Dependencies/Lottie/Lottie.framework/**') != '' }}
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: main/Dependencies/Lottie
+          key: ${{ steps.lottie_cache.outputs.cache-primary-key }}
+
+      - name: Restore FFmpegKit cache
+        id: ffmpeg_cache
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: main/modules/ffmpeg
+          key: ffmpegkit-${{ runner.os }}-${{ hashFiles('main/Tools/fetch-ffmpegkit.sh') }}
+
+      - name: Build FFmpegKit from source
+        if: ${{ inputs.build_ffmpeg && steps.ffmpeg_cache.outputs.cache-hit != 'true' }}
+        run: |
+          cd main
+          bash Tools/fetch-ffmpegkit.sh
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Save FFmpegKit cache
+        if: ${{ inputs.build_ffmpeg && steps.ffmpeg_cache.outputs.cache-hit != 'true' && hashFiles('main/modules/ffmpeg/**') != '' }}
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: main/modules/ffmpeg
+          key: ${{ steps.ffmpeg_cache.outputs.cache-primary-key }}
 
       - name: Fix compiling & Build Package
         id: build_package
         run: |
           (echo 'THEOS_IGNORE_PARALLEL_BUILDING_NOTICE = yes' >> ~/.theosrc)
           cd ${{ github.workspace }}/main
-          sed -i '' "12s#.*#BUNDLE_ID = ${{ env.BUNDLE_ID }}#g" Makefile
-          sed -i '' "11s#.*#DISPLAY_NAME = ${{ env.APP_NAME }}#g" Makefile          
+          sed -i '' "s/^BUNDLE_ID .*/BUNDLE_ID = ${{ env.BUNDLE_ID }}/" Makefile
+          sed -i '' "s/^DISPLAY_NAME .*/DISPLAY_NAME = ${{ env.APP_NAME }}/" Makefile
+          sed -i '' "s/^TARGET .*/TARGET = iphone:clang:${{ inputs.sdk_version }}:16.0/" Makefile
+          sed -i '' "s#^export SDK_PATH .*#export SDK_PATH = \$(THEOS)/sdks/iPhoneOS${{ inputs.sdk_version }}.sdk/#" Makefile
           make package FINALPACKAGE=1
-          (mv "packages/$(ls -t packages | head -n1)" "packages/YouTube Reborn_${{ env.YOUTUBE_VERSION  }}_${{ env.REBORN_VERSION }}.ipa")
-          echo "package=$(ls -t packages | head -n1)" >>$GITHUB_OUTPUT
+          (mv "packages/$(ls -t packages | head -n1)" "packages/YouTube Reborn_${{ env.YT_VERSION }}_${{ env.REBORN_VERSION }}.ipa")
+          echo "package=$(ls -t packages | head -n1)" >> $GITHUB_OUTPUT
           echo -e "==> \033[1mSHASUM256: $(shasum -a 256 packages/*.ipa | cut -f1 -d' ')\033[0m"
           echo -e "==> \033[1mBundle ID: ${{ env.BUNDLE_ID }}\033[0m"
 
         env:
           THEOS: ${{ github.workspace }}/theos
           REBORN_VERSION: ${{ inputs.reborn_version }}
-          YOUTUBE_VERSION: ${{ inputs.youtube_version }}
           BUNDLE_ID: ${{ inputs.bundle_id }}
           APP_NAME: ${{ inputs.app_name }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.4.3
+        if: ${{ inputs.upload_artifact }}
+        uses: actions/upload-artifact@v7.0.2
         env:
           REBORN_VERSION: ${{ inputs.reborn_version }}
-          YOUTUBE_VERSION: ${{ inputs.youtube_version }}
         with:
-          name: YouTube Reborn_${{ env.YOUTUBE_VERSION }}_${{ env.REBORN_VERSION }}
+          name: YouTube Reborn_${{ env.YT_VERSION }}_${{ env.REBORN_VERSION }}
           path: ${{ github.workspace }}/main/packages/${{ steps.build_package.outputs.package }}
           if-no-files-found: error
 
       - name: Create Release
+        if: ${{ inputs.create_release }}
         id: create_release
-        uses: softprops/action-gh-release@v2.3.2
+        uses: softprops/action-gh-release@v3.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REBORN_VERSION: ${{ inputs.reborn_version }}
-          YOUTUBE_VERSION: ${{ inputs.youtube_version }}
-          DRAFT: ${{ inputs.create_release }}
         with:
-          tag_name: v${{ env.YOUTUBE_VERSION }}-${{ env.REBORN_VERSION }}-(${{ github.run_number }})
-          name: v${{ env.YOUTUBE_VERSION }}-${{ env.REBORN_VERSION }}-(${{ github.run_number }})
+          tag_name: v${{ env.YT_VERSION }}-${{ env.REBORN_VERSION }}-(${{ github.run_number }})
+          name: v${{ env.YT_VERSION }}-${{ env.REBORN_VERSION }}-(${{ github.run_number }})
           files: main/packages/*.ipa
-          draft: ${{ env.DRAFT }}
+          draft: true

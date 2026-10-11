@@ -1,47 +1,153 @@
 # This has been created by @lillieH1000
+# Modernized to match the YouMod / uYouEnhanced build conventions.
 
 name: Build the YouTube Reborn deb
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      build_ffmpeg:
+        description: "Build FFmpegKit from source (cached; first run takes 30-90 min)"
+        default: true
+        required: false
+        type: boolean
+      sdk_version:
+        description: "iOS SDK Version"
+        default: "26.5"
+        required: true
+        type: string
+      commit_id:
+        description: "(Optional) Commit ID to build at"
+        default: ""
+        required: false
+        type: string
+      include_lottie:
+        description: "Vendor the official Lottie framework (SwiftUI menu animation)"
+        default: false
+        required: false
+        type: boolean
+      lottie_version:
+        description: "Lottie iOS release to fetch"
+        default: "4.6.0"
+        required: false
+        type: string
+      upload_artifact:
+        description: "Upload deb as artifact"
+        default: true
+        required: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@main
+    name: Build YouTube Reborn deb
+    runs-on: macos-latest
+    permissions:
+      contents: write
 
-      - name: Checkout theos/theos
-        uses: actions/checkout@main
+    steps:
+      - name: Checkout Main
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.inputs.commit_id || github.ref }}
+          submodules: recursive
+
+      - name: Install Dependencies
+        run: brew install ldid dpkg make wget unzip jq gnu-sed autoconf automake libtool pkgconf
+
+      - name: Set PATH
+        run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
+
+      - name: Setup Theos
+        uses: actions/checkout@v7.0.1
         with:
           repository: theos/theos
           ref: master
-          submodules: recursive
           path: theos
+          submodules: recursive
 
-      - name: Checkout aricloverEXTRA/sdks
-        uses: actions/checkout@main
+      - name: SDK Caching
+        id: SDK
+        uses: actions/cache@v6.1.0
         with:
-          repository: aricloverEXTRA/sdks
-          ref: master
-          sparse-checkout: iPhoneOS17.5.sdk
-          path: theos/sdks
+          path: theos/sdks/
+          key: iOS-${{ inputs.sdk_version }}-SDK
 
-      - name: Checkout aricloverEXTRA/YouTubeHeader
-        uses: actions/checkout@main
-        with:
-          repository: aricloverEXTRA/YouTubeHeader
-          ref: main
-          path: YouTubeHeader
-
-      - name: Build Package 
+      - name: Download iOS SDK
+        if: steps.SDK.outputs.cache-hit != 'true'
         run: |
-          brew install make ldid 
-          export THEOS=theos
+          git clone --quiet -n --depth=1 --filter=tree:0 https://github.com/aricloverALT/sdks/ sdks
+          cd sdks
+          git sparse-checkout set --no-cone iPhoneOS${{ inputs.sdk_version }}.sdk
+          git checkout --quiet
+          mv *.sdk $THEOS/sdks
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Fix Theos broken pipe issue
+        run: |
+          find $THEOS -name "*.sh" -type f | while read -r SCRIPT; do
+            if grep -q '| head' "$SCRIPT" 2>/dev/null; then
+              sed -i '' 's/| head/2>\/dev\/null | head/g' "$SCRIPT" 2>/dev/null || true
+            fi
+          done
+          find $THEOS -name "*.mk" -type f | while read -r MK; do
+            if grep -q '| head' "$MK" 2>/dev/null; then
+              sed -i '' 's/| head/2>\/dev\/null | head/g' "$MK" 2>/dev/null || true
+            fi
+          done
+
+      - name: Restore Lottie cache
+        id: lottie_cache
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: Dependencies/Lottie
+          key: lottie-${{ inputs.lottie_version }}
+
+      - name: Fetch Lottie
+        if: ${{ inputs.include_lottie && steps.lottie_cache.outputs.cache-hit != 'true' }}
+        run: bash Tools/fetch-lottie.sh ${{ inputs.lottie_version }}
+
+      - name: Save Lottie cache
+        if: ${{ inputs.include_lottie && steps.lottie_cache.outputs.cache-hit != 'true' && hashFiles('Dependencies/Lottie/Lottie.framework/**') != '' }}
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: Dependencies/Lottie
+          key: ${{ steps.lottie_cache.outputs.cache-primary-key }}
+
+      - name: Restore FFmpegKit cache
+        id: ffmpeg_cache
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: modules/ffmpeg
+          key: ffmpegkit-${{ runner.os }}-${{ hashFiles('Tools/fetch-ffmpegkit.sh') }}
+
+      - name: Build FFmpegKit from source
+        if: ${{ inputs.build_ffmpeg && steps.ffmpeg_cache.outputs.cache-hit != 'true' }}
+        run: bash Tools/fetch-ffmpegkit.sh
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Save FFmpegKit cache
+        if: ${{ inputs.build_ffmpeg && steps.ffmpeg_cache.outputs.cache-hit != 'true' && hashFiles('modules/ffmpeg/**') != '' }}
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: modules/ffmpeg
+          key: ${{ steps.ffmpeg_cache.outputs.cache-primary-key }}
+
+      - name: Build Package
+        run: |
+          export THEOS=${{ github.workspace }}/theos
           gmake clean package FINALPACKAGE=1
           gmake clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Artifact
+        if: ${{ inputs.upload_artifact }}
+        uses: actions/upload-artifact@v7.0.2
         with:
+          name: YouTubeReborn-deb
           path: packages/*.deb
+          if-no-files-found: error
