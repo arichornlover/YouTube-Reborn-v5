@@ -15,7 +15,7 @@ DISPLAY_NAME = YouTube
 BUNDLE_ID = com.google.ios.youtube
 INSTALL_TARGET_PROCESSES = YouTube
 
-YouTubeReborn_FILES = Sources/Tweak.xm $(shell find Sources/Controllers -name '*.m') $(shell find Sources -name '*.xm') $(shell find Dependencies/YouTubeExtractor -name '*.m') $(shell find Sources/Modern -name '*.xm')
+YouTubeReborn_FILES = Sources/Tweak.xm $(shell find Sources -name '*.m') $(shell find Sources -name '*.xm') $(shell find Dependencies/YouTubeExtractor -name '*.m')
 YouTubeReborn_IPA = tmp/Payload/YouTube.app
 YouTubeReborn_CFLAGS = -fobjc-arc -Wno-deprecated-declarations -I$(THEOS_PROJECT_DIR)/Sources -I$(THEOS_PROJECT_DIR)/Dependencies -F$(THEOS_PROJECT_DIR)/Dependencies/Lottie
 YouTubeReborn_FRAMEWORKS = UIKit Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox SwiftUI Combine QuartzCore JavaScriptCore

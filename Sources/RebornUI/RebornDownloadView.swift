@@ -12,7 +12,9 @@ public final class RebornDownloadSheet: NSObject {
             sheet.detents = [.medium(), .large()]
             sheet.prefersGrabberVisible = true
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheet.preferredCornerRadius = RebornTheme.cardCornerRadius
+            if sheet.responds(to: NSSelectorFromString("setPreferredCornerRadius:")) {
+                sheet.setValue(RebornTheme.cardCornerRadius, forKey: "preferredCornerRadius")
+            }
         }
         presenter.present(hosting, animated: true)
     }

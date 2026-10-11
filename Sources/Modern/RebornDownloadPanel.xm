@@ -17,6 +17,9 @@
 @implementation RebornStreamFormat
 @end
 
+@implementation RebornDownloadPayload
+@end
+
 static RebornStreamFormat *RebornFormatFromDictionary(NSDictionary *dict) {
     RebornStreamFormat *format = [RebornStreamFormat new];
     format.itag = [dict[@"itag"] intValue];
